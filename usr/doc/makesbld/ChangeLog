@@ -1,0 +1,147 @@
+March 2012
+	Bump to 0.33
+	Update tar and patch routines to accept .xz files
+	Update mirrors.conf to include GNUALPHA and GNU fetch
+	locations
+April 2011
+	Bump to 0.32
+	Add support for zip file unzip in unpack function
+March 2011
+	Bump to 0.31
+	update for default extension for package
+	update mirrors.conf for sourceforge
+	update skel files
+	move source of mirrors.conf to skel file
+January 2011
+	update for x86_64
+	bump 0.30
+	add doetc() function
+February 2007
+	add KDE mirror to mirrors.conf
+January 2007
+	add niceness functionality
+	rearranged makesbld.conf slightly for easier readability
+	rename package to makesbld to avoid naming conflict
+	rename script files to makesbld and makesbld-d
+	and their desktop files
+	rename all makesbld dirs to makesbld
+	/etc/makesbld, /usr/lib/makesbld, /usr/share/makesbld
+	and referencers to ~/.makesbld and change all docs
+	add NICENESS configuration to /etc/makesbld/makesbld.conf
+	add etc2new to skel files
+	increment to 0.17
+	fix nasty bug in spatch function where the patch program call
+	was really calling the patch function. That's what you get when
+	naming functions the same as executables.
+	fix bug in dobin and dosbin to replace "switch" with "shift"
+	add function doexe
+	make all do functions call doins for simplicity
+	change dorc to add a parameter for NOEXE to prevent making a file
+	executable
+	complete adding local for function vars
+	increment to 0.18
+	changed function fix_source to update deprecated
+	find -perm +0111 command to /0111. 
+	Added -type f so only files are modified.
+	BUGFIX: doexe function
+	this was nasty. Changed perms in system dirs
+	without regard to $PKG!
+	begin work on function api: man5/makesbld.inc.5
+	increment to 0.19 removing 0.18
+	change makesbld-d to allow for 80 chars for
+	mirror field. Too short for mozilla.
+	add function to makesbld.inc: cleanup
+	removes $SRC and $PKG directories.
+	Update documentation for new function.
+	add GNU mirror to mirrors.conf
+December 2006
+	added function spatch to patch files
+	added function etc2new to rename etc files
+	Version 0.1 of SlackBuild announced and created
+	new directory hierarchy, new skel files, and
+	a compatibility break with the past.
+	Release version 0.10
+	Rename project to makesbld
+	increment to 0.11
+	add check for ~/.makesbld dir and
+	allow for defaults to be stored there or
+	modified .skel files
+	added dialog-based file creation
+	added protocol for a ~/.makesbld/user.cfg file
+	added README-QUICKSTART
+	increment to 0.12
+	added README.makesb
+	added functionality for generating cvs or perl
+	based slackbuilds.
+	increment to 0.13
+	correct spelling in makesbd.sh crated > created
+	increase description length in makesbd.sh to 40
+	decrease revision length in makesbd.sh to 6
+	fix doins() function in makesbld.inc
+	it did not skip first parameter when copying files
+	first manpage attempt for makesb.1
+	added .desktop files for makesb[d].sh and 
+	awful looking icon.
+	added README.SlackBuild.Anatomy file to describe
+	layouts
+	increment to 0.14
+	added svn fetch routine and skel file
+	changes to makesbld.conf file
+	WGETOPTS -> WGET_OPTIONS
+	CVSOPTS -> CVS_OPTIONS (bug fix)
+	changes to makesb and makesbd.sh programs and documentation
+	bugfix to doins function
+	bugfix to dodoc function
+	bugfix to dorc function
+	increment to 0.15
+	change name in sbd desktop file so it is clearer
+	added checkinstall credit in AUTHORS
+	add MD5SUM and sigs
+	add optimizations to fix_source, gzip_man by Lasse Colin
+	gzip_man now fixes symlinks that may be created
+	apply xargs to remaining find commands for efficiency
+	remove find and chown from create_docs as not needed
+	remove chmod and chown from all do functions
+	added double_check_user function to make sure owner is root:root
+	optional to use. Added commented to SlackBuild.skel files
+	added functions strip_all and gzip_man_info
+	bug fix to gzip_man and info. remove wildcards
+	increment to 0.16
+November 2006
+	corrected logic of do functions to handle multiple files
+	added SYS parameter to dobin/sbin to place in /bin /sbin
+	added dodoc function to copy docs over
+	added doman function to copy over man pages
+	added doshare function to insert files to /usr/share/APPNAME
+	added dorc function to copy to /etc/rc.d/
+	added doins function to insert file anywhere
+October 2006
+	Cleaned up code, organization, tabs, spacing, etc.
+	added dobin, dosbin, domenu, doicon, doshare functions (inspired by gentoo)
+	added gzip_doc and gzip_misc functions for recursive gzipping
+	added NOR parameter to prevent recursive gzipping
+	added untar function
+	added rpm2cpio capabilities to untar
+	added die function
+	added fetch and cvs_fetch functions
+	added pkg_setup function
+	added usage function and conditionals to run only one build function
+	removed upgrade_self function
+	changed create_docs to copy entire directories
+	Created a section for common mirrors which can be used as arguments
+		for wget.
+	Added CONFIGURE_DEFAULTS variable to standardize configure command
+	s|bin_perms - changed so default is root:root, not root:bin
+	fixed create_docs so only files would have 0644 perms, not dirs!
+	dirs have 0755 perms
+	.skel file changes
+	Created perl-based skel file
+	adds some variables for usability
+	SRC_NAME, TAR_NAME, REVISION
+	adds CVS fetch section for convenience
+	makes used of untar function in slack-package.conf
+	optionally uses gzip_docs|misc functions
+	adds CONFIGURE_DEFAULTS for configure in compile()
+	adds DESTDIR option for make install in prepare()
+	cleaned up code for readability
+

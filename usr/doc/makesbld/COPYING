@@ -1,0 +1,12 @@
+makesbld project:
+
+No legal mumbo jumbo. Use as you like, edit, copy, distribute,
+etc. Attribution is appreciated. Please forward changes and
+improvements if you care to.
+
+THERE IS NO WARRANTY THAT THIS WILL WORK AS EXPECTED. THERE
+IS NO SANDBOX PROTECTION DURING THE MAKING OF SLACKBUILDS.
+FAILURE TO USE THE $SRC AND $PKG VARIABLES PROPERLY OR NOT
+CHECK THE RESULTS PRIOR TO INSTALL MAY AFFECT YOUR SYSTEM.
+
+Peter Hyman <pete@peterhyman.com>

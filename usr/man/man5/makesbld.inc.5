@@ -1,0 +1,261 @@
+.\" makesbld function reference man page
+.TH makesbld.inc 5 1/2007 "Linux" "makesbld Function Reference"
+
+.SH NAME
+makesbld.inc \- Reusable Functions for makesbld
+
+.SH SYNOPSIS
+.B source /usr/lib/makesble/makesbld.inc
+.P
+.B makesbld.inc
+is sourced as part of
+.I /etc/makesbld/makesbld.conf
+file which is sourced in each SlackBuild.
+
+.SH DESCRIPTION
+The 
+.B makesbld.inc
+file contains functions that are used as part of the makesbld
+package. These are intended to be static, reusable code which
+will save the user time when developing SlackBuild options.
+.P
+The Following function are general in nature and unclassified:
+.HP
+.B bin_perms
+\- change perms of executables to 0755. This function will
+look in all bin or sbin directories.
+.HP
+.B cleanup
+\- remove $SRC and $PKG directories. This function may be called
+on the command line as in
+.BI name.SlackBuild\  cleanup
+, or the function can be called within a SlackBuild file.
+.HP
+.B create_docs
+\- create most document files and place them in the default
+document directory.
+.HP
+.B die
+.RI [ errormessage ]
+\- abort on error function. Pass
+.I errormessage
+to the
+.B die
+function and it will exit with error code 1.
+.HP
+.B etc2new
+\- rename all files that are in /etc in the build tree to
+.RI filename .new
+, so they will not overwrite any configuration files that
+may be install in
+.B /etc
+on the target system.
+.HP
+.B fix_source
+\- this function will change ownership to root:root and
+apply either 0755 or 0644 perms to all files in the Source
+file tree prior to compilation.
+.HP
+.BI getargs\  process
+\- getargs is called from each SlackBuild and is used for running
+only parts of a build. The
+.I processes
+that can be called are:
+.IR setup ,\  fetch ,\  unpack ,\  fix[_source] ,\ 
+.IR patch ,\  compile ,\  install ,\  desc[ription] ,
+.IR doinst ,\  build ,\  cleanup ,\  \--help ,
+.IR \-h ,\  \-help .
+.B getargs
+accepts only one argument and exits. If an invalid argument is passed
+a usage screen is shown and the program exits.
+.HP
+.B pkgsetup
+\- this function is called in each SlackBuild to set up the
+Source and Package directories that will be used throughout
+the process.
+.HP
+.BI spatch\  file(s)
+\- spatch will patch files in the source tree with the file(s)
+listed. The file can be plain, gzipped or bzipped. If there is
+an error, the program will abort.
+.HP
+.BI unpack\  tarball
+\- unpacks any type of tarball and extracts files to the source
+tree.
+.HP
+.B usage
+\- shows usage options.
+
+.P
+The
+.B do...
+functions place files or directories containing files
+into the build location specified in the SlackBuild file.
+Calling a
+.B do...
+function with an absolute path will be placed into
+.B $PKG/path
+where
+.B $PKG
+is the build location.
+.HP
+.B dobin
+.RI [ SYS ]
+.I file(s)
+\- place a file or files in /usr/bin or /bin (with SYS parameter).
+.HP
+.B dodoc
+.I files
+or
+.I directories
+\- place files or directories into /usr/doc/program-version
+manually.
+.HP
+.B doetc
+.I file(s)
+\- place files into /etc
+.HP
+.B doexe
+.I dir file(s)
+\- place files into directory specified and mark executable (0755).
+.HP
+.B doicon
+.I file(s)
+\- place an icon file or files into /usr/share/pixmaps
+.HP
+.B doins
+.I dir file(s)
+\- place a file wherever you say to. This function is called by
+all the other
+.B do...
+functions for file placement.
+.HP
+.B doman
+.I file(s)
+\- place man page files into /usr/man/man? automatically. No
+man prefix is required.
+.HP
+.B domenu
+.I file(s)
+\- place a desktop file or files into /usr/share/applications.
+.HP
+.B dorc
+.RI [ NOEXE ]
+.I files(s)
+\- place files into /etc/rc.d. If NOEXE is passed as the first
+parameter, the files will NOT be marked executable (0755). They
+will be marked (0644).
+.HP 
+.B doshare
+.IR file(s) | dir
+\- place files or directories into /usr/share/program directory.
+.HP
+.B dosbin
+.RI [ SYS ]
+.I file(s)
+\- place a file or files /usr/sbin or /sbin (with SYS parameter).
+
+.P
+The
+.B fetch
+functions retrieve source files from a http or ftp location
+as well as from cvs or svn.
+.HP
+.B fetch
+\- fetch a tarball.
+The
+.B fetch
+function requires the following variables to be set on entry.
+From
+.IR makesbld.conf ,
+.BR WGET\  and\  WGET_OPTIONS
+must contain the location for the wget program and
+WGET_OPTIONS must contain any options that are fixed
+for wget.
+.BR SRC_LOC\  and\  TAR_NAME
+must be defined in the
+.I program.SlackBuild
+file and contain the http or ftp location of the
+file
+.BR TAR_NAME .
+.HP
+.B fetch-cvs
+\- fetch source from cvs.
+The
+.B fetch-cvs
+function requires the following variables to be set on entry.
+From
+.IR makesbld.conf ,
+.BR CVS\  and\  CVS_OPTIONS
+must contain the location for the cvs program and
+CVS_OPTIONS must contain any options that are fixed
+for cvs.
+.BR CVS_PSERVER\  and\  CVS_MODULE
+must be defined in the
+.I program.SlackBuild
+file and contain the cvs server location and the
+name and directory of the module to fetch.
+.HP
+.B fetch-svn
+\- fetch source from svn.
+The
+.B fetch-svn
+function requires the following variables to be set on entry.
+From
+.IR makesbld.conf ,
+.BR SVN\  and\  SVN_OPTIONS
+must contain the location for the svn program and
+SVN_OPTIONS must contain any options that are fixed
+for svn.
+.BR SVN_SERVER\  and\  SVN_MODULE
+must be defined in the
+.I program.SlackBuild
+file and contain the svn server location and the
+name and directory of the module to fetch.
+
+.P
+The zip and strip functions (to be completed)
+.HP
+gzip_man_info() - gzip man and info pages
+.HP
+gzip_docs() [NOR] - gzip documents. NOR=norecurse dir
+.HP
+gzip_info() - gzip info files
+.HP
+gzip_man() - gzip man files
+.HP
+gzip_misc() dir [NOR] - gzip files wherever you say to. NOR=norecurse dir
+gzipped, or bzipped.
+.HP
+strip_all() - calls strip bin|lib|static
+.HP
+strip_bin() - strip bin files in $PKG
+.HP
+strip_lib() - strip library files in $PKG
+.HP
+strip_static() - strip static files in $PKG
+
+.SH SEE ALSO
+.BR makesbld (1)
+
+.SH BUGS
+Let me know!
+
+.SH ACKNOWLEDGMENTS
+Jim Simmons at http://www.linuxpackages.net, whose original
+.B slackbuilds
+package got me started on this project.
+.P
+Lasse Collin from http://www.tukaani.org for help and
+necessary corrections to several of the functions in this
+file. The Tukanni project offers its own build scripting
+system, called
+.BR tukbuild .
+.P
+Gentoo Linux at http://www.gentoo.org, whose ebuild system
+is the gold standard for package management, creation, and
+distribution. The
+.B do...
+functions are shamelessly mimmicked from Gentoo.
+.SH AUTHOR
+Peter Hyman <pete@peterhyman.com>

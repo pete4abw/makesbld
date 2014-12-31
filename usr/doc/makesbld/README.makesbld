@@ -1,0 +1,95 @@
+README makesbld - makesbld project
+
+makesbld.sh and makesbld-d.sh are SlackBuild generators that prompt users
+for key fields that will be populated in SlackBuilds.
+
+makesbld.sh is a terminal-based script that uses bash READ to get line
+input.
+
+makesbld-d.sh is also terminal-based, but uses the dialog program for
+an ncurses input mode.
+
+Each program takes 1 of 3 optional paramaters or none.
+
+makesbld[d].sh [ cvs | svn | perl ]
+
+If cvs is selected, the skeleton SlackBuild file for fetching cvs
+source is used. If svn is selected, the skeleton SlackBuild file
+for fetching svn source is used. If perl is selected, a special 
+perl SlackBuild is used (has a different make and make install
+paradigm). If no option is selected, a standard wget-based 
+SlackBuild is created.
+
+makesbld[-d].sh uses the file ~/.makesbld/user.cfg if available
+for determing the SlackBuild home directory and the Creator's
+name.
+
+Prompts from each are very similar with only the CVS PSERVER and
+CVS MODULE, SVN SERVER and SVN MODULE differing.
+
+Standard or Perl prompts from makesbld.sh:
+
+Enter Program Name: 
+Enter Program Version #: 
+Enter Description: 
+Enter Build Revision #: 
+Enter Download Location: 
+Enter Tar Filename to download: 
+Enter Requirements: 
+Enter Notes: 
+
+        Review your makesbld settings:
+        ---------------------------------
+        1: PROGRAM NAME: 
+        2: VERSION: 
+        3: DESCRIPTION: 
+        4: REVISION: 
+        5: MIRROR: 
+        6: TARNAME: 
+        7: REQUIREMENTS: 
+        8: NOTES: 
+        9: CREATOR: Peter Hyman
+        O: OK
+        Q: QUIT
+        ----------
+        
+Type Selection:
+
+The CVS version prompts are:
+
+Enter Program Name: 
+Enter Program Version #: 
+Enter Description: 
+Enter Build Revision #: 
+Enter CVS pserver: 
+Enter CVS Module Name: 
+Enter Requirements: 
+Enter Notes: 
+
+        Review your makesbld settings:
+        ---------------------------------
+        1: PROGRAM NAME: 
+        2: VERSION: 
+        3: DESCRIPTION: 
+        4: REVISION: 
+        5: CVS PSERVER: 
+        6: CVS MODULE: 
+        7: REQUIREMENTS: 
+        8: NOTES: 
+        9: CREATOR: Peter Hyman
+        O: OK
+        Q: QUIT
+        ----------
+        
+Type Selection: 
+
+The SVN prompts would replace 5 and 6 with SVN SERVER and SVN
+MODULE.
+
+After reviewing the settings and pressing `o' or `O' the SlackBuild
+is created with the data provided.
+
+If using the makesbld-d.sh program, validation is on screen and
+interactive. Pressing the OK button generates the SlackBuild.
+
+## end README.makesbld

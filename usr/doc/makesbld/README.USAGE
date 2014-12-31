@@ -1,0 +1,146 @@
+README USAGE - makesbld Project
+
+USAGE:
+
+Copy the appropriate makesbld.skel file from /usr/share/makesbld
+to your work directory. It is not required to mark the file a+x. It
+can be run as follows:
+
+sh filename.SlackBuild [argument]
+
+You can edit the file manually as explained below, or use the
+makesb[d].sh program to prompt you for needed variables.
+[ TODO make cvs or perl autocreation programs ]
+
+Edit the file to suit your needs. In particular, you should know where
+the file is located, how it is extracted, and where the files are 
+stored. For many programs, just the following needs to be completed:
+
+NAME=
+VERSION=
+REVISION=
+BUILD=$REVISION$MYIN
+DESCRIPTION=
+PKG_NAME=$NAME-$VERSION-$ARCH-$BUILD.tgz
+
+# add mirror location to SRC_LOC
+# add extension to TAR_NAME and change
+SRC_LOC=
+SRC_NAME=$NAME-$VERSION
+SRC_EXTRACT_DIR=$SRC_NAME
+TAR_NAME=$SRC_NAME.
+
+For cvs, the variables to be set are slightly different and
+replace those for SRC_LOC to TAR_NAME
+
+# CVS information, if needed
+# add : password before @ for auto login
+# eg :pserver:anonymous:@anoncvs.....
+CVS_PSERVER=
+CVS_MODULE=
+SRC_EXTRACT_DIR=$CVS_MODULE
+SRC_NAME=$NAME-$VERSION
+
+Once done, the SlackBuild will call the functions in the build file.
+These, in turn, will call parent functions in the .inc file sourced
+in the build file. The functions called in order are:
+
+get_args          - process command line
+pkg_setup         - clean out SRC and PKG directories
+local_fetch       - call routine to fetch source
+local_unpack      - unpack source
+local_fix_source  - change perms and ownership of SRC
+patch             - if you have patch files add them in
+                    the patch function
+compile           - run configure and make source according
+                    to CONFIGURE_DEFAULTS and MAKEOPTS
+install           - install program to PKG
+make_slack_desc   - create slack-desc file. You will need to hand
+                    edit the contents of the function to make a
+                    complete slack-desc file
+make_doinst       - create doinst.sh file if needed
+build_pkg         - build package and place in PKG_DIR
+
+If the SlackBuild file is called with a parameter, the get_args function
+will parse the command and execute the function desired. Arguments to
+the SlackBuild file can be one or none of:
+
+  setup         - execute pkg_setup function
+  fetch         - download source tarball, cvs or svn module
+  unpack        - unpack tarball
+  fix[_source]  - fix perms of Source directory
+  patch         - patch source files
+  compile       - compile source
+  install       - run make install and prepare sources for package build
+  desc[ription] - create slack-desc file and any others needed
+  doinst        - create doinst.sh file
+  build[_pkg]   - make package
+
+If an invalid option or -help, --help, -h is used, a status of all
+current variables and pathnames in use for the given application will
+be printed. For the pth package, the output is like this:
+
+pth.SlackBuild usage
+----------------------------------------------------------------------
+with none or one of these options
+  setup         - execute pkg_setup function
+  fetch         - download source tarball, cvs or svn module
+  unpack        - unpack tarball
+  fix[_source]  - fix perms of Source directory
+  patch         - patch source files
+  compile       - compile source
+  install       - run make install and prepare sources for package build
+  desc[ription] - create slack-desc file and any others needed
+  doinst        - create doinst.sh file
+  build[_pkg]   - make package
+
+Variables used:
+---------------
+NAME            - pth
+VERSION         - 2.0.7
+REVISION        - 2
+BUILD           - 2ph
+DESCRIPTION     - Threading lib for gnupg
+DOCDIR          - /tmp/package-pth/usr/doc/pth-2.0.7
+SHAREDIR        - /tmp/package-pth/usr/share/pth
+SRC_LOC         - ftp://ftp.gnu.org/gnu/pth
+SRC_NAME        - pth-2.0.7
+SRC_EXTRACT_DIR - pth-2.0.7
+TAR_NAME        - pth-2.0.7.tar.gz
+SRC             - /tmp/pth-2.0.7
+PKG             - /tmp/package-pth
+PKG_DIR         - /mnt/src/Slackware-11/test
+PKG_NAME        - pth-2.0.7-i486-2ph.tgz
+TMP             - /tmp
+
+Internal Variables set:
+-----------------------
+CONFIGURE_DEFAULTS - --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+ARCH               - i486
+C[XX]FLAGS         - -O2 -march=i486 -mtune=i686 | CXX - /usr/bin/g++ | CPP - /usr/bin/gcc -E
+MAKEOPTS           - -j1
+WGET               - /usr/bin/wget | options -c
+
+If cvs is being used, the CVS options and PSERVER variables will show.
+If svn is being used, the SVN options and SVN_SERVER variables will show.
+
+Some editing of the install function may be required to copy additional
+files or change permissions. Be CAREFUL! THERE IS NO SANDBOX PROTECTION,
+so if you fail to use the $PKG or $SRC variables as a prefix to any file
+operations, a command like rm -fr * will be devastating!
+
+$PKG is the installation directory, $SRC is the source directory.
+
+ADDITIONAL CONSIDERATIONS:
+
+Is the program you are building make friendly? Can you use the DESTDIR
+variable? Make sure first, otherwise make install will write onto your
+system. Remember, NO SANDBOX PROTECTION. If DESTDIR is not supported in
+the Makefile, then it may be necessary to copy the files over manually.
+
+mkdir -p $PKG/usr/bin
+cp $SRC/bin/myfile $PKG/usr/bin
+
+etc.
+
+## end README.USAGE

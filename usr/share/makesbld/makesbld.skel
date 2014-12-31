@@ -1,0 +1,170 @@
+#!/bin/sh
+#############################
+## Build script for: 
+## Creator: 
+## Date: 
+## Requirements: 
+##
+## Notes: 
+##
+
+# customizations
+MYIN=
+PKG_DIR=
+ARCH=
+
+CONFFILE="/etc/makesbld/makesbld.conf"
+if [ -a "$CONFFILE" ]; then
+	source $CONFFILE
+else
+	echo "conf file error: $CONFFILE not found."
+	exit 1
+fi
+
+NAME=
+VERSION=
+REVISION=
+BUILD=$REVISION$MYIN
+DESCRIPTION=
+PKG_NAME=$NAME-$VERSION-$ARCH-$BUILD.$PKG_EXT
+
+# add mirror location to SRC_LOC
+# add extension to TAR_NAME and change
+SRC_NAME=$NAME-$VERSION
+TAR_NAME=$SRC_NAME.
+
+MIRRORS="/etc/makesbld/mirrors.conf"
+[ -r $MIRRORS ] && source $MIRRORS
+
+SRC_LOC=
+SRC_EXTRACT_DIR=$SRC_NAME
+SRC=$TMP/$SRC_EXTRACT_DIR
+PKG=$TMP/package-$NAME
+
+# default document directory
+DOCDIR=$PKG/usr/doc/$SRC_NAME
+SHAREDIR=$PKG/usr/share/$NAME
+
+[ ! -n "$NAME" ] && die "error: nothing to do. nothing defined"
+
+
+# retrieve source to $CWD
+local_fetch() {
+	fetch
+	return
+}
+
+# extract source
+local_unpack() {
+	cd $TMP
+	unpack $CWD/$TAR_NAME
+	return
+}
+
+# fix source code perms or other hacks like patches as may be required
+local_fix_source() {
+	cd $SRC
+	fix_source
+	return
+}
+
+# patch source. Uncomment to use
+patch() {
+	# call spatch here
+	# cd $SRC
+	# spatch patchfile(s)
+	return
+}	
+
+compile() {
+	cd $SRC
+	$NICE ./configure $CONFIGURE_DEFAULTS	|| die "error: configure"
+	$NICE make $MAKEOPTS || die "error: make"
+	return
+}
+
+install() {
+	cd $SRC
+	$NICE make DESTDIR=$PKG install || die "error: make install"
+
+	create_docs
+
+	# change to PKG to do stuff
+	cd $PKG
+
+	strip_all		# combine bin, lib, static
+	bin_perms
+	gzip_man_info		# combine man and info
+	gzip_docs		# will gzip all documents. use NOR to prevent recursion
+				# function gzip_misc can be called to zip ad hoc dirs
+	# etc2new		# rename any files in /etc to filename.new
+	# double_check_user	# use if files copied from outside source tree to
+				# assure user:group is root:root in $PKG
+	return
+}
+
+# if a slack-desc or slack-desc.gz file exists,
+# don't create this one.
+make_slack_desc() {
+	cd $CWD
+	mkdir -p $PKG/install 
+	if [ -r slack-desc ] ; then
+		cp slack-desc $PKG/install
+	elif [ -r slack-desc.gz ] ; then
+		zcat slack-desc.gz > $PKG/install/slack-desc || die "error: zcat slack-desc.gz"
+	elif [ -r slack-desc.bz2 ] ; then
+		bzcat slack-desc.bz2 > $PKG/install/slack-desc || die "error: bzcat slack-desc.bz2"
+	else
+        cat > $PKG/install/slack-desc << END 
+      |-----handy-ruler------------------------------------------------------| 
+$NAME: $NAME $VERSION ($DESCRIPTION)
+$NAME:
+$NAME:
+$NAME:
+$NAME: 
+$NAME: 
+$NAME:
+$NAME: 
+$NAME:
+$NAME:
+$NAME:
+END
+	fi
+	# just in case, change perms and ownership
+	chown root:root $PKG/install/slack-desc
+	chmod 0644 $PKG/install/slack-desc
+}
+
+make_doinst() {
+## if you need to make a doinst.sh file, uncomment
+
+##	cat > $PKG/install/doinst.sh << END
+## add lines for doinst.sh
+## END
+
+## add -p to the build package command below
+	return
+}
+
+build_pkg() {
+	# Build the package:
+	cd $PKG
+	## add -p to preserve doinst.sh if created above
+
+	$NICE makepkg -l y -c n $PKG_DIR/$PKG_NAME || die "error: package creation"
+	echo "$NAME has been compiled and a package created in $PKG_DIR"
+	return
+}
+
+# call functions
+get_args "$@"	# process command line
+pkg_setup
+local_fetch
+local_unpack
+local_fix_source
+patch
+compile
+install
+make_slack_desc
+make_doinst
+build_pkg

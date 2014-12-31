@@ -1,0 +1,11 @@
+makesbld: makesbld-0.32 (SlackBuild creator)
+makesbld:
+makesbld: This program provides a set of functions that make
+makesbld: creating and maintaining SlackBuild files easier. It
+makesbld: uses conf files and a common function file for
+makesbld: consistency.
+makesbld: The original idea for this comes from Jim Simmons
+makesbld: at linuxpackages.net. Ideas for layout and functions
+makesbld: come in part from Gentoo's ebuild system.
+makesbld:
+makesbld: Peter Hyman <pete@peterhyman.com>

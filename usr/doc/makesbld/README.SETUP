@@ -1,0 +1,105 @@
+README SETUP - makesbld Project
+
+SETUP
+
+The /etc/makesbld/makesbld.conf file needs to be set up first.
+Here are descriptions of the variables used.
+
+** Global variables
+umask must be 0022
+SCRIPTFILE is where the makesbld.inc file is. This
+  contains all the reusable code and imports other modules
+  or conf files as needed
+MYIN are your initials that will appear on the package
+  eg myprogram-0.1-i486-1MYIN.tgz
+CWD is where the build script is
+TMP is the base build area where the package will be
+  compiled and built
+PKG_DIR is where the completed package will be copied to
+  default is build script dir
+PKG_EXT is the default extension for packages, tgz, txz, etc.
+NICENESS is used to optionally set nice to keep compilations
+  running in the background. Default setting is 19. Clear to
+  avoid using.
+
+** these variables are used for setting compile defaults
+CONFIGURE_DEFAULTS are for set for the most common defaults
+ARCH will either be defined in the environment or i486
+  change if desired. This will be part of the package name
+MAKEOPTS is for particular Make options
+CFLAGS...CXXCPP are exported so configure will know how to
+  handle. These used to be prepended to the configure command
+  Change or add to as desired
+
+** DOCFILES are from the Checkinstall program by Piotr Simon
+  with some additions 
+
+The makesbld.skel files.
+
+There are three SlackBuild skeleton files.
+makesbld.skel - for downloading a tarball and compiling
+makesbld.cvs.skel - for fetching CVS and compiling
+makesbld.svn.skel - for fetching SVN and compiling
+makesbld.perl.skel - for fetching, compiling,  and installing 
+  a perl program
+
+The makesbld files are designed so that it can be run with
+only a specific function being called. makesbld accepts
+the following arguments:
+
+# ./Program.SlackBuild { fetch, unpack, fix[_source], compile,
+  install, desc[ription], doinst, build[_pkg] }
+
+This can save time so that if you need to change the way the
+program gets installed, you don't need to recompile it or
+can be used to test parts of the build script safely.
+
+The global variables in the skel files are discussed in the
+README.USAGE file.
+
+The file /etc/makesbld/mirrors.conf may contain common mirror
+sites that a number of applications may use. It is not required.
+
+The format of mirrors.conf is
+VARIABLE_NAME=location
+
+Then, when setting the SRC_LOC in your SlackBuild file, simply
+insert the appropriate variable plus the filename or additional
+path info.
+
+Here's the sample mirror file included:
+
+## MISCELLANOUS MIRROR LOCATIONS
+SOURCEFORGE=http://easynews.dl.sourceforge.net/sourceforge
+GNOME=ftp://ftp.gnome.org/mirror/gnome.org/sources
+
+These are root directories for sources from which an application
+name and version subdirectory can be appended, eg:
+
+SRC_LOC=$GNOME/$NAME/$VERSION/$TAR_NAME
+
+Saves a lot of typing.
+
+SETUP A $HOME/.makesbld directory
+
+In order to preserve the integrity of the package, the
+user can copy all the *.skel files in /usr/share/makesbld to
+a home configuration area. This directory must be named
+~/.makesbld.
+
+The ~/.makesbld directory may also contain a user.cfg file.
+This file contains variables used by the makesbld.sh and related
+programs that automatically generate a SlackBuild. The user.cfg
+file contains the following:
+
+SBDIR=
+CREATOR=
+
+SBDIR is the base SlackBuild repository directory where projects
+are stored. CREATOR is the name (most likely yours) of the person
+or organization that created the SlackBuild.
+
+If user.cfg is not present, the user may interactively enter the
+data or modify the .skel files.
+
+## end README.SETUP

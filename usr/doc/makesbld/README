@@ -1,0 +1,53 @@
+README - makesbld project
+
+DESCRIPTION
+
+makesbld is a set of reusable functions that simplify the creation and
+maintenance of packages for Slackware Linux. Using the makesbld package
+will enforce standards across your build files and make it easy to
+maintain or expand. It's a framework which allows you to use what you
+need or bypass the defaults.
+
+It is based on code originally created by Jim Simmons at 
+linuxpackages.net with the .skel files modified by Jay Scott
+Raymond.
+
+Some of the functions, such as create_docs, the strip* and gzip*
+functions are taken from the slackbuilds slack-pkg.conf file. Some
+functions have been heavily modified, others left intact.
+
+Several of the ideas for the package are extracted from Gentoo Linux's
+ebuild system, such as the functions do* which place files in
+specific directories.
+
+The idea for using Mirror variables for retrieving source from
+popular locations was also taken from Gentoo. Another idea taken
+from Gentoo is the ability to run one part of the SlackBuild at a
+time to save time or test functionality.
+
+makesbld is a build-only system. While it will create Slackware
+package tgz files, SlackBuild has no part in installing the
+resulting package. This is left to pkgtool.
+
+The rationale of this package is to strike a balance between
+what Gentoo offers which is complex and robust and the monolithic
+build scripts which Slackware has. Writing Gentoo ebuilds is almost
+like learning a new language yet Slackware's build paradigm is
+too simplistic.
+
+Hopefully, this project will strike a happy medium.
+
+See the following files for Setup and Usage information:
+
+README.SETUP - discusses initial configuration
+README.USAGE - discusses usage
+README.FUNCTIONS - details the reusable functions available
+README.makesbld - explains how to use the automatic script generation
+  programs makesbld.sh and makesbdld-d.sh
+README.QUICKSTART - walks the user through the creation of a SlackBuild
+README.SlackBuild.Anatomy - details the layout of the SlackBuild files
+
+
+Peter Hyman <pete@peterhyman.com>
+
+## end README

@@ -1,0 +1,435 @@
+README QUICKSTART - makesbld Project
+
+QUICKSTART guide
+
+The best way to evaluate the benefits of this project is
+to use it. This guide will lead you step by step in the
+creation of a SlackBuild. The complete Xdialog.SlackBuild
+file is in the usr/share directory for review.
+
+I had intended to write a script which would use Xdialog,
+but unfortunately, it is not compatible with the --form
+option used in the makesbld-d.sh script. I had written this
+guide before I realized that. I expect to be able to
+create an Xdialog-friendly script installation at some
+point.
+
+In the meantime, this should provide a good reference for
+users of makesbld.
+
+In general, these steps must be taken. You do not need to be
+root to create a SlackBuild file using makesbld.
+
+0: (you should already have edited /etc/makesbld/makesbld.conf)
+
+1: Locate project source
+2: Download and evaluate configure to see if any
+   special options need setting. Check Makefile to
+   see if it honors DESTDIR
+3: Create a SlackBuild, edit as needed
+4: Run the SlackBuild
+5: Evaluate SlackBuild package tree, edit the SlackBuild
+   if necessary
+6: Install package
+7: Test the installation
+
+Making an Xdialog SlackBuild
+
+1: Google is your friend. A search of Xdialog shows the homepage as
+   http://xdialog.dyns.net/
+2: Source location and current version is:
+   http://thgodef.nerim.net/xdialog/Xdialog-2.3.1.tar.bz2
+   (We will need this for makesbld.sh or makesbld-d.sh)
+   ./configure --help shows nothing out of the ordinary
+   that needs setting. (Remember, that the variable
+   CONFIGURE_DEFAULTS contains system-wide defaults for
+   file installation locations
+3: Run makesbld.sh or makesbld-d.sh to fill in the details
+   Here is a sample session:
+
+peter@mars $ makesbld.sh
+Enter Program Name: Xdialog
+Enter Program Version #: 2.3.1
+Enter Description: X interface for scripts
+Enter Build Revision #: 1
+Enter Download Location: http://thgodef.nerim.net/xdialog
+Enter Tar Filename to download: $NAME-$VERSION.tar.bz2
+Enter Requirements: 
+Enter Notes: 
+[ Your Name not prompted for. See notes ]
+
+        Review your makesbld settings:
+        ---------------------------------
+        1: PROGRAM NAME: Xdialog
+        2: VERSION: 2.3.1
+        3: DESCRIPTION: X interface for scripts
+        4: REVISION: 1
+        5: MIRROR: http://thgodef.nerim.net/xdialog
+        6: TARNAME: $NAME-$VERSION.tar.bz2
+        7: REQUIREMENTS: 
+        8: NOTES: 
+        9: CREATOR: Peter Hyman
+        O: OK
+        Q: QUIT
+        ----------
+        
+Type Selection: 
+
+Notes on this session. 
+
+My name was stored in ~/.makesbld/user.cfg so I was not asked 
+to input it. If there is a change required, any field including 
+Name can be changed by pressing the number desired.
+
+The MIRROR field only includes the path, which can be ftp or http.
+The TARNAME (file to download) is not included in the MIRROR.
+
+TARNAME uses a shortcut. In the SlackBuild.skel files, The download
+filename defaults to
+
+TAR_NAME=$SRC_NAME.[ extension required ]
+
+SRC_NAME is set to $NAME-$VERSION.
+
+So for the Tar Filename prompt, I merely used existing variables
+already in the .skel file. I could also have used $SRC_NAME. Another
+shortcut that can be used is for MIRROR. For example, if this
+project was on Sourceforge, I could have typed for Mirror:
+$SOURCEFORGE/$NAME and the Mirror would have been retrieved from
+the /etc/makesbld/SlaclkBuilder.conf file.
+
+I did not choose to type in any Requirements or Notes, So, I am done!
+
+Pressing 'o' or 'O' creates the SlackBuild in the SlackBuild tree
+you specify in the user.cfg file. If no location was specified, the
+default is /tmp/makesbld.
+
+Type Selection: o
+
+Xdialog.SlackBuild has been created in /mnt/src/Slackware-11/Xdialog/2.3.1
+Please review the file carefully before use and edit as needed.
+
+REMEMBER: IT IS THE PACKAGER'S RESPONSIBILITY TO MAKE SURE THE PROGRAM
+GETS INSTALLED PROPERLY. THEREFORE, REVIEWING THE RESULTS OF RUNNING
+A SLACKBUILD IS IMPERATIVE!
+
+CHECKING THE RESULTS:
+
+Here is the top part of the Xdialog.SlackBuild that was created. Nothing
+below this was changed by the makesbld.sh program.
+
+#!/bin/sh
+#############################
+## Build script for: Xdialog
+## Creator: Peter Hyman 
+## Date: 12/26/06 
+## Requirements:  
+##
+## Notes:  
+##
+
+CONFFILE="/etc/makesbld/makesbld.conf"
+if [ -a "$CONFFILE" ]; then
+	source $CONFFILE
+else
+	echo "conf file error: $CONFFILE not found."
+	exit 1
+fi
+
+NAME=Xdialog
+VERSION=2.3.1
+REVISION=1
+BUILD=$REVISION$MYIN
+DESCRIPTION="X interface for scripts"
+PKG_NAME=$NAME-$VERSION-$ARCH-$BUILD.tgz
+
+# add mirror location to SRC_LOC
+# add extension to TAR_NAME and change
+SRC_LOC=http://thgodef.nerim.net/xdialog
+SRC_NAME=$NAME-$VERSION
+SRC_EXTRACT_DIR=$SRC_NAME
+TAR_NAME=$NAME-$VERSION.tar.bz2
+
+SRC=$TMP/$SRC_EXTRACT_DIR
+PKG=$TMP/package-$NAME
+
+DOCDIR=$PKG/usr/doc/$SRC_NAME
+SHAREDIR=$PKG/usr/share/$NAME
+
+EDITING THE FILE:
+About the only variable that MAY need editing would be
+SRC_EXTRACT_DIR. Most tarfiles extract files to NAME-Versaion.
+However, if the extract directory is different, SRC_EXTRACT_DIR
+needs to be changed otherwise the SlackBuild script won't be 
+able to find the source!
+
+Other edits may need to be made in the compile() and install()
+functions to finesse the build or move additional files during
+the build. If patches are needed edit the patch() function.
+If you do not have a slack-desc file, edit the section in
+description().
+
+For example, if I wanted to test this with gtk2+ support, I would
+add --with-gtk2 after $CONFIGURE_DEFAULTS.
+
+compile() {
+        cd $SRC
+        ./configure $CONFIGURE_DEFAULTS || die "error: configure"
+        make $MAKEOPTS || die "error: make"
+        return
+
+install() {
+        cd $SRC
+        make DESTDIR=$PKG install || die "error: make install"
+
+        create_docs
+
+        # change to PKG to do stuff
+        cd $PKG
+
+        strip_bin
+        strip_lib
+        strip_static
+        bin_perms
+        gzip_man
+        gzip_info
+        gzip_docs               # will gzip all documents. use NOR to prevent recursion
+        #gzip_misc [directory]  # will gzip files in any specified dir
+        etc2new                 # rename any files in /etc to filename.new
+
+        return
+}
+
+The description() function is used to create a slack-desc file.
+If you have one written already, simply place it in the same
+directory as the SlackBuild file and it will be used instead.
+The slack-desc file may be gzipped. Here is what I did.
+
+# if a slack-desc or slack-desc.gz file exists,
+# don't create this one.
+make_slack_desc() {
+        cd $CWD
+        mkdir -p $PKG/install 
+        if [ -r slack-desc ] ; then
+                cp slack-desc $PKG/install
+        elif [ -r slack-desc.gz ] ; then
+                zcat slack-desc.gz > $PKG/install/slack-desc || die "error: zcat slack-desc.gz"
+        elif [ -r slack-desc.bz2 ] ; then
+                bzcat slack-desc.bz2 > $PKG/install/slack-desc || die "error: bzcat slack-desc.bz2"
+        else
+        cat > $PKG/install/slack-desc << END 
+      |-----handy-ruler------------------------------------------------------| 
+$NAME: $NAME $VERSION ($DESCRIPTION)
+$NAME:
+$NAME: Xdialog is designed to be a drop in replacement for the dialog and
+$NAME: cdialog programs (BTW Xdialog may also be used in place of gdialog).
+$NAME: It converts any terminal based program into a program with an 
+$NAME: X-windows interface. The dialogs are easier to see and use and the
+$NAME: new widgets adds even more functionnalities.
+$NAME:
+$NAME: 
+$NAME: 
+$NAME:
+END
+        fi
+        # just in case, change perms and ownership
+        chown root:root $PKG/install/slack-desc
+        chmod 0644 $PKG/install/slack-desc
+}
+
+If you have a special doinst.sh requirement, edit the make_doinst()
+function.
+
+make_doinst() {
+## if you need to make a doinst.sh file, uncomment
+
+##      cat > $PKG/install/doinst.sh << END
+## add lines for doinst.sh
+## END
+
+## add -p to the build package command below
+        return
+}
+
+Many times, a canned SlackBuild will work for most cases.
+
+4: RUN THE SLACKBUILD
+
+Run the SlackBuild. This step requires root access.
+WARNING --- This version of makesbld does not contain SandBox
+protection, so an errant SlackBuild file can write over system
+areas. Please review your edits carefully and make sure the
+variables $SRC and $PKG are set up properly!
+
+# sh ./Xdialog.SlackBuild
+.....
+Gzipping Xdialog-2.3.1-i486-1ph.tar...
+
+Renaming Xdialog-2.3.1-i486-1ph.tar.gz to Xdialog-2.3.1-i486-1ph.tgz...
+
+Moving Xdialog-2.3.1-i486-1ph.tgz to /mnt/src/Slackware-11/Xdialog/2.3.1...
+
+Package creation complete.
+
+Xdialog has been compiled and a package created in /mnt/src/Slackware-11/Xdialog/2.3.1
+
+real    0m12.186s
+user    0m4.629s
+sys     0m1.933s
+
+12 seconds to run the SlackBuild! Download, compile, install (to $DESTDIR).
+The prepared package is now in your SlackBuild directory (or wherever you 
+defined $PKG_DIR in /etc/makesbld/makesbld.conf).
+
+5: EVALUATING THE PACKAGE TREE
+
+Review and check the file locations to make sure they are where you want.
+less Xdialog-2.3.1-i486-1ph.tgz is useful.
+
+Ut oh! I noticed this:
+drwxr-xr-x root/root         0 2006-12-26 06:22 usr/share/doc/
+drwxr-xr-x root/root         0 2006-12-26 06:22 usr/share/doc/Xdialog-2.3.1/
+-rw-r--r-- root/root      8898 2006-12-26 06:22 usr/share/doc/Xdialog-2.3.1/warning.xpm
+-rw-r--r-- root/root     18958 2006-12-26 06:22 usr/share/doc/Xdialog-2.3.1/license.html
+
+Slackware places doc files into /usr/doc, and this information is all
+html stuff. doc is normally reserved for READMEs and COPYING and related
+files, not a user guide. So, I will choose to edit the install() function
+and move this stuff from
+/usr/share/doc/Xdialog/2.3.1 to
+/usr/share/Xdialog
+
+install() {
+        cd $SRC
+        make DESTDIR=$PKG install || die "error: make install"
+
+        create_docs
+
+        # change to PKG to do stuff
+        cd $PKG
+
+        # move things from $PKG/usr/share/doc/Xdialog-$VERSION
+        # Xdialog-$VERSION = $NAME-$VERSION = $SRC_NAME!
+        # to $PKG/usr/share/Xdialog
+        mkdir -p usr/share/$NAME
+        mv usr/share/doc/$NAME-$VERSION/* usr/share/$NAME
+        rm -fr usr/share/doc
+
+Now, reviewing the manpage, and the html documentation, it references a
+samples directory which make install does NOT install. THIS HAPPENS OFTEN!
+Again, it's up to the packager to make sure all necessary or desired
+documentation gets installed. It turns out that make install installs the
+sample files into the docdir, and need to be moved.
+
+I do this using a hack which compares all files in $SRC/samples and moves
+them one by one in the $PKG/usr/$NAME directory. The core of the hack is
+
+for file in $(ls $SRC/samples)
+
+which will list all files in $SRC/samples. Then, I move them. The following
+code gets appended to the above.
+
+ 	# make install installs samples files into wrong place
+	# this hack fixes it.
+	# temporarily move to proper directory
+	( cd usr/share/$NAME
+		mkdir samples
+		for file in $(ls $SRC/samples)
+		do
+			mv $file samples
+		done
+	)
+
+This cleans out everything. It's easier than trying to patch Makefile
+and makes it easy to see what's going on.
+
+Don't blindly trust Makefiles. All too often, they don't do all they should.
+
+NOTE! I do not copy, move, or remove /usr/share/Xdialog. I omit the
+leading /. Alternatively, and a better practice for new users is to
+use $PKG/usr/share.....Our sandbox here is $PKG. Remember that!
+
+Another thing to notice is the use of Variables. By using $NAME, $SRC_NAME,
+and/or $VERSION, this snippet becomes portable for future versions.
+
+If I wanted, I could go to the package-Xdialog directory and test this out
+manually before re-running the script.
+
+Since the program is already compiled, and I did not change the compile()
+function. I really don't need to re-run the entire SlackBuild. I could
+just run... 
+
+# sh Xdialog.SlackBuild install
+
+which would run everything from make install to cleaning up the
+package tree.
+
+This is useful if you have large programs like wine, apache, or samba
+that take a lot of time to compile. If the compilation is good, then
+sometimes you can fix things by just re-running parts of the SlackBuild.
+
+Or, if I moved the files manually in /tmp/package-Xdialog and did not
+want to do install() again, I could just run
+
+# sh Xdialog.SlackBuild build
+
+to remake the package!
+
+Either way, here is the result of the edits:
+drwxr-xr-x root/root         0 2006-12-26 09:28 usr/share/
+$ less Xdialog-2.3.1-i486-1ph.tgz
+.....
+drwxr-xr-x root/root         0 2006-12-26 09:28 usr/share/Xdialog/
+-rw-r--r-- root/root     18958 2006-12-26 09:28 usr/share/Xdialog/license.html
+-rw-r--r-- root/root      5077 2006-12-26 09:28 usr/share/Xdialog/notags.png
+-rw-r--r-- root/root      3419 2006-12-26 09:28 usr/share/Xdialog/rcfile.png
+-rw-r--r-- root/root     10937 2006-12-26 09:28 usr/share/Xdialog/editbox.png
+-rw-r--r-- root/root      4626 2006-12-26 09:28 usr/share/Xdialog/yesno-wizard.png
+-rw-r--r-- root/root     12441 2006-12-26 09:28 usr/share/Xdialog/common.html
+-rw-r--r-- root/root      2496 2006-12-26 09:28 usr/share/Xdialog/special.html
+-rw-r--r-- root/root      4543 2006-12-26 09:28 usr/share/Xdialog/fixedfont.png
+-rw-r--r-- root/root      3206 2006-12-26 09:28 usr/share/Xdialog/authors.html
+-rw-r--r-- root/root      3068 2006-12-26 09:28 usr/share/Xdialog/gauge.png
+-rw-r--r-- root/root     17110 2006-12-26 09:28 usr/share/Xdialog/transient.html
+drwxr-xr-x root/root         0 2006-12-26 09:28 usr/share/Xdialog/samples/
+-rw-r--r-- root/root      8898 2006-12-26 09:28 usr/share/Xdialog/samples/warning.xpm
+-rw-r--r-- root/root       417 2006-12-26 09:28 usr/share/Xdialog/samples/treeview
+-rw-r--r-- root/root       798 2006-12-26 09:28 usr/share/Xdialog/samples/radiolist
+
+which is the way I wanted it!
+
+6: INSTALL PACKAGE
+
+# installpkg Xdialog-2.3.1-i486-1ph.SlackBuild
+
+The Xdialog.SlackBuild is included in the share directory for
+review.
+
+WHAT IF A NEW VERSION COMES OUT?
+
+Usually, a quick edit of $VERSION in the SlackBuild file is enough.
+Sometimes, there may be new configure options or make install changes.
+Best to test first and then finalize like we did in this example.
+
+7: TEST THE INSTALLATION
+
+Sometimes, like with the samples directory, you may not notice a problem
+until after you install the program. The contents of the package are YOUR
+responsibility. So, make sure the package contains what it has to. If it
+is missing parts, then be sure to add them. 
+
+For example, the create_docs function gets most common document names, but
+might miss one or more or entire directories! That's what the install()
+function is for. You may also need a custom doinst.sh file or need to
+create special /var directories or user/group names.
+
+Or, perhaps, things like Makefiles get copied into the package tree and
+need to be removed. The best course of action is to review the
+/tmp/package-$NAME tree and see what might be missing. However, sometimes
+you may not notice a problem until the program get's installated and
+a library cannot be found, or a symlink needs to be created.
+
+Hopefully, makesbld will save you a lot of time creating the core
+SlackBuild file and make it easy to maintain with future edits.
+
+## end README.QUICKSTART

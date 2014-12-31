@@ -1,0 +1,9 @@
+# makesbld makesb.sh desktop file
+[Desktop Entry]
+Name=makesbld
+Exec=makesbld.sh
+Type=Application
+Terminal=true
+Categories=Development;
+Icon=makesbld
+Comment=Interactive Console makesbld script

@@ -1,0 +1,52 @@
+README FUNCTIONS - makesbld Project
+
+FUNCTIONS AVAILABLE:
+
+In the makesbld.inc file are a number of functions that are used to
+manage the SlackBuild process. They are:
+
+bin_perms()  - change perms of executables
+cleanup() - removes work directories $SRC and $PKG
+create_docs () - create most document files and place them
+die()  - abort on error function
+dobin() [SYS] - place a file in /usr/bin or /bin (with SYS parameter)
+dodoc() - place files or directories into $PKG/usr/doc/$SRC_NAME
+doetc() - place files or directories into $PKG/etc
+doexe() dir file(s) - place files into directories and mark executable (0755)
+doicon() file(s) - place a file into $PKG/usr/share/pixmaps
+doins() dir file(s) - place a file wherever you say to
+doman() file(s) - place files into $PKG/usr/man/man?
+domenu() file(s) - place a file into $PKG/usr/share/applications
+dorc() [NOEXE] files(s) - place files into $PKG/etc/rc.d (NOEXE=don't mark executable)
+dosbin() [SYS] - same with /usr/sbin or /sbin (with SYS parameter)
+doshare() [file(s)|dir] - place files or directories into $PKG/usr/share/$NAME
+double_check_user() - checks $PKG to make sure owner:group is root:root
+etc2new() - rename all files in $PKG/etc to filename.new
+            this will need to be addressed during package installation
+            to notify the user that new files are there. If you have
+            files in /etc, then see the file pats_newfile_trick and insert
+            it into your doinst() function. The escapes are all set so just
+            plug it in and use it.
+fetch() - function to fetch files with wget
+fetch_cvs() - function to fetch files with cvs
+fetch_svn() - function to getch files with svn
+fix_source() - change perms and ownership of $SRC
+get_args() - process command line args. Valid options are:
+	setup, fetch, unpack, fix[_source], patch, compile, install,
+	desc[ription], doinst, build, cleanup, --help, -h, -help
+gzip_man_info() - gzip man and info pages
+gzip_docs() [NOR] - gzip documents. NOR=norecurse dir
+gzip_info() - gzip info files
+gzip_man() - gzip man files
+gzip_misc() dir [NOR] - gzip files wherever you say to. NOR=norecurse dir
+pkg_setup() - clean out directories $SRC and $PKG
+spatch() file(s) - applies patch file(s) in $SRC. Files can be plain text,
+	gzipped, or bzipped.
+strip_all() - calls strip bin|lib|static
+strip_bin() - strip bin files in $PKG
+strip_lib() - strip library files in $PKG
+strip_static() - strip static files in $PKG
+unpack() tarfile - unpack a tarball or rpm file to $SRC
+usage() - show usage options
+
+## end README.FUNCTIONS

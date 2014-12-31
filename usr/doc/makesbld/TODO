@@ -1,0 +1,11 @@
+Things not done but would be nice!
+
+vim scripting
+have a bash expert work over the code in makesbld.inc
+sandbox protection. Make sure everything is done in $SRC
+and $PKG
+see if we can get xdialog to work. does not handle forms
+desktop files only run for regular SlackBuilds, not
+for cvs, svn, or perl.
+get decent icons, or maybe use a stock icon.
+

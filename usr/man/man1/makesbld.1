@@ -1,0 +1,180 @@
+.\" makesbld.sh man page
+.TH makesbld 1 12/2006 "Linux" "Make SlackBuild Scipt"
+
+.SH NAME
+makesbld.sh, makesbld-d.sh \- Interactive SlackBuild Script Generator
+
+.SH SYNOPSIS
+.B makesbld.sh 
+.RI [ cvs | svn | perl ]
+.br
+.B makesbld-d.sh
+.RI [ cvs | svn | perl ]
+
+.SH DESCRIPTION
+The 
+.B makesbld.sh
+and
+.B makesbld-dd.sh
+programs allow for the interactive creation
+of SlackBuild files. The
+.B makesbld.sh
+program prompts the user, in sequence, for PROGRAM NAME,
+VERSION, DESCRIPTION, Build REVISION, MIRROR location,
+TARNAME, Program REQUIREMENTS, NOTES, and
+Build CREATOR. The
+.B makesbld-d.sh
+program creates an ncurses data entry form which the user
+can edit in any sequence.
+.P
+If the
+.I cvs
+optional parameter is used, the programs will
+prompt for CVS PSERVER location and CVS MODULE
+name instead of MIRROR and TARNAME and insert the
+necessary code to fetch the cvs source
+instead of a tarball.
+.P
+If the
+.I svn
+optional parameter is used, the programs will
+prompt for SVN SERVER location and SVN MODULE
+name instead of MIRROR and TARNAME and insert the
+necessary code to fetch the svn source
+instead of a tarball.
+.P
+If the
+.I perl
+optional parameter is used, the programs will
+insert the proper build instructions into the
+SlackBuild file for perl programs as well as
+include a section for the doinst.sh file that
+will insert the proper pod description.
+
+.SH RETURN VALUE
+The programs return no usable value, but can be
+aborted. If the programs are aborted no files or
+directories are created.
+.P
+If the programs are completed, a SlackBuild
+file will be created under the directory
+specified in the $SBDIR variable defined in 
+.I $HOME/.makesbld/user.cfg
+or /tmp/makesbld by default. The actual
+SlackBuild location will be
+.I $SBDIR/$NAME/$VERSION/$NAME.SlackBuild
+where $NAME and $VERSION are defined in the programs.
+
+.SH OPTIONS
+The
+.I $HOME/.makesbld/user.cfg
+file may contain two variable assignments.
+.IP
+.BI SBDIR= path
+.br
+.BI CREATOR= SlackBuild
+.I creator name
+.P
+In addition, the file
+.I /etc/makesbld/makesbld.conf
+needs to be reviewed and edited, primarily for the
+.B MYIN
+variable which contains the builder's initials to
+be appended to all package tgz files.
+
+.SH FILES
+.PD 0
+.HP
+.I /etc/makesbld/makesbld.conf
+- contains global configuration settings.
+.HP
+.I /etc/makesbld/mirrors.conf
+- contains download locations set to variables.
+.HP
+.I /usr/share/makesbld/*.skel
+- default .skel files (standard, cvs, svn, perl) for
+creation of SlackBuilds.
+.HP
+.I /usr/lib/makesbld/makesbld.inc
+- contains reusable functions.
+.HP
+.I $HOME/.makesbld/user.cfg
+- contains user configuration settings and
+(optionally) modified .skel files that will
+be used to create SlackBuild files.
+.PD
+
+.SH SECURITY
+.P
+.B *** WARNING ***
+.IP
+SlackBuild files have no sandbox protection
+and must be run as root. Therefore if a
+SlackBuild is modified and removes or alters
+files without properly testing the results,
+this could affect the host system.
+.IP
+If the internal variables $PKG or $SRC are
+modified, it is the user's responsiblity
+to set them to a safe location.
+.IP
+If the Makefile used when compiling a target
+program with a SlackBuild does not recognize
+the DESTDIR make option, the user must help
+the SlackBuild to properly
+install the target program otherwise
+.I make install 
+will write onto the system.
+.P
+The
+.B makesbld.sh
+and
+.B makesbld-d.sh
+programs can be run as any user and only create
+the SlackBuild file and its directory. The user
+running these programs needs to have write
+permission to the location specified in the
+.B $SBDIR
+variable (see the RETURN VALUE section).
+
+.SH NOTES
+.B makesbld.sh
+and
+.B makesbld-d.sh
+will complete the most common settings for
+SlackBuilds. However, it is not recommended
+to run the SlackBuild without reviewing it!
+.P
+SlackBuild variable names can be used as
+responses to field prompts, and this can save
+a lot of time.
+For example, the
+.B MIRROR
+field can have
+.B $GNOME/$NAME/$VERSION
+as a location which would expand to the Gnome
+source repository (from the
+.I /etc/makesbld/mirrors.conf
+file)and the Name and Version
+subdirectory. If $VERSION has three parts,
+i.e. 2.10.3, this needs to be shorted to 2.10
+and the Gnome Mirror can be changed from
+the above to:
+.BR $GNOME/$NAME/${VERSION:0:4} .
+.P
+Another example is
+.BR TARNAME .
+This can be set as:
+.B $SRC_NAME.tar.bz2
+(or tar.gz, or whatever the proper extension
+is). $SRC_NAME is defined as
+.BR $NAME-$VERSION .
+.P
+Examining any of the .skel files will
+show the default assignments.
+
+.SH BUGS
+Let me know!
+
+.SH AUTHOR
+Peter Hyman <pete@peterhyman.com>

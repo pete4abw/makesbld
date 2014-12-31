@@ -1,0 +1,187 @@
+#!/bin/sh
+#############################
+## Build script for: rox
+## Creator: Peter Hyman 
+## Date: 12/29/06 
+## Requirements: pygtk gtk+ 
+##
+## Notes:  
+##
+
+CONFFILE="/etc/makesbld/makesbld.conf"
+if [ -a "$CONFFILE" ]; then
+	source $CONFFILE
+else
+	echo "conf file error: $CONFFILE not found."
+	exit 1
+fi
+
+NAME=rox
+VERSION=2.5svn
+REVISION=1
+BUILD=$REVISION$MYIN
+DESCRIPTION="Rox file and desktop manager"
+PKG_NAME=$NAME-$VERSION-$ARCH-$BUILD.tgz
+
+# SVN information, if needed
+SVN_SERVER=https://svn.sourceforge.net/svnroot/rox/trunk
+SVN_MODULE=rox
+SRC_EXTRACT_DIR=$SVN_MODULE
+SRC_NAME=$NAME-$VERSION
+SRC=$TMP/$SRC_EXTRACT_DIR
+PKG=$TMP/package-$NAME
+
+# default document directory
+DOCDIR=$PKG/usr/doc/$SRC_NAME
+SHAREDIR=$PKG/usr/share/$NAME
+
+[ ! -n "$NAME" ] && die "error: nothing to do. nothing defined"
+
+
+# retrieve source to $TMP
+local_fetch() {
+	fetch_svn
+	return
+}
+
+# fix source code perms or other hacks like patches as may be required
+local_fix_source() {
+	cd $SRC
+	fix_source
+	return
+}
+
+# patch source. Uncomment to use
+patch() {
+	# call spatch here
+	# cd $SRC
+	# spatch patchfile(s)
+	return
+}	
+
+compile() {
+	cd $SRC
+	cd ROX-Filer
+	./AppRun --compile || die "error: ROX did not compile"
+	cd src
+	make clean || die "error: can't cleanup"
+	# need to create man pages with svn
+	cd Docs
+	make all
+	return
+}
+
+install() {
+	cd $SRC
+	# no make install, so parody the install.sh steps
+	# remove build, and related cruft
+	rm -fr ROX-Filer/build
+	rm -fr ROX-Filer/src/autom4te.cache
+	find . -type d -name '.svn' -exec rm -fr '{}' \;
+
+	doman rox.1
+	( cd $PKG/usr/man/man1
+		ln -s rox.1 ROX-Filer.1
+	)
+	doins /etc/xdg Choices/MIME-types/*
+	chmod a+x $PKG/etc/xdg/*
+	doins /usr/share/mime/packages rox.xml
+	doins /usr/lib/rox ROX-Filer
+	dobin $CWD/rox
+	( cd ROX-Filer/Help
+		dodoc README* COPYING Changes TODO
+		doins /usr/doc/$SRC_NAME/html *.html
+	)
+	# change to PKG to do stuff
+	cd $PKG
+	strip_bin
+	strip_lib
+	strip_static
+	bin_perms
+	gzip_man
+	gzip_info
+	gzip_docs NOR		# will gzip all documents. use NOR to prevent recursion
+	#gzip_misc [directory]	# will gzip files in any specified dir
+	etc2new			# rename any files in /etc to filename.new
+
+	return
+}
+
+make_slack_desc() {
+	cd $CWD
+	mkdir -p $PKG/install 
+	if [ -r slack-desc ] ; then
+		cp slack-desc $PKG/install
+	elif [ -r slack-desc.gz ] ; then
+		zcat slack-desc.gz > $PKG/install/slack-desc || die "error: zcat slack-desc.gz"
+	elif [ -r slack-desc.bz2 ] ; then
+		bzcat slack-desc.bz2 > $PKG/install/slack-desc || die "error: bzcat slack-desc.bz2"
+	else
+        cat > $PKG/install/slack-desc << END 
+      |-----handy-ruler------------------------------------------------------| 
+$NAME: $NAME $VERSION ($DESCRIPTION)
+$NAME:
+$NAME:
+$NAME:
+$NAME: 
+$NAME: 
+$NAME:
+$NAME: 
+$NAME:
+$NAME:
+$NAME:
+END
+	fi
+	# just in case, change perms and ownership
+	chown root:root $PKG/install/slack-desc
+	chmod 0644 $PKG/install/slack-desc
+}
+
+make_doinst() {
+## if you need to make a doinst.sh file, uncomment
+
+	cat > $PKG/install/doinst.sh << END
+config() {
+    NEW="\$1"
+    OLD="\`dirname \$NEW\`/\`basename \$NEW .new\`"
+    # If there's no config file by that name, mv it over:
+    if [ ! -r \$OLD ]; then
+        mv \$NEW \$OLD
+    elif [ "\`cat \$OLD | md5sum\`" = "\`cat \$NEW | md5sum\`" ]; then # toss the redundant copy
+        rm \$NEW
+    fi
+    # Otherwise, we leave the .new copy for the admin to consider...
+}
+
+config /etc/xdg/application_postscript.new
+config /etc/xdg/text.new
+config /etc/xdg/text_html.new
+
+update-mime-database /usr/share/mime	
+END
+
+## add -p to the build package command below
+	return
+}
+
+build_pkg() {
+	# Build the package:
+	cd $PKG
+	## add -p to preserve doinst.sh if created above
+
+	makepkg -l y -c n -p $PKG_DIR/$PKG_NAME || die "error: package creation"
+	echo "$NAME has been compiled and a package created in $PKG_DIR"
+	return
+}
+
+# call functions
+get_args "$@"	# process command line
+pkg_setup
+local_fetch
+local_fix_source
+patch
+compile
+install
+make_slack_desc
+make_doinst
+build_pkg
