@@ -19,8 +19,8 @@ bin_perms() {
 # it can be called from the command line or placed explicitly into
 # a slackbuild file
 cleanup() {
-	[ ${#PKG} -eq 0 ] && die "error: cleanup, no package directory!"
-	[ ${#SRC} -eq 0 ] && die "error: cleanup, no source directory!"
+	[ ${#PKG} -eq 0 ] && die "error: cleanup: no package directory!"
+	[ ${#SRC} -eq 0 ] && die "error: cleanup: no source directory!"
 	# bye
 	rm -fr $PKG $SRC
 }
@@ -29,7 +29,7 @@ cleanup() {
 # need to be in $SRC to locate files
 create_docs () {
 	local i
-	[ -z "$DOCDIR" ] && die "error: DOCDIR not defined"
+	[ -z "$DOCDIR" ] && die "error: create_docs: DOCDIR not defined"
 	mkdir -p ${DOCDIR}
 	cd $SRC
 	for i in ${DOCFILES}; do
@@ -61,7 +61,7 @@ die() {
 
 dobin() {
 	local BINDIR
-	[ $# -eq 0 ] && die "error dobin function: not enough arguments"
+	[ $# -eq 0 ] && die "error: dobin: not enough arguments"
 	if [ "$1" = "SYS" ] ; then
 		BINDIR=$PKG/bin
 		shift
@@ -73,9 +73,8 @@ dobin() {
 
 # adhoc move something to document directory
 dodoc() {
-	local DOCDIR
-	[ $# -eq 0 ] && die "error dodoc function: not enough arguments"
-	DOCDIR=$PKG/usr/doc/$NAME-$VERSION
+	[ $# -eq 0 ] && die "error: dodoc: not enough arguments"
+	[ -z "$DOCDIR" ] && die "error: dodoc: DOCDIR not defined"
 	doins $DOCDIR $@
 }
 
@@ -83,7 +82,7 @@ dodoc() {
 doetc()
 {
 	local ETCDIR
-	[ $# -eq 0 ] && die "error doetc function: not enough arguments"
+	[ $# -eq 0 ] && die "error: doetc: not enough arguments"
 	ETCDIR=$PKG/etc
 	doetc $ETCDIR $@
 }
@@ -91,7 +90,7 @@ doetc()
 # install files and mark executable
 doexe() {
 	local pkglen INSDIR
-	[ $# -lt 2 ] && die "error doexe function: not enough arguments"
+	[ $# -lt 2 ] && die "error: doexe: not enough arguments"
 	doins $@
 	pkglen=${#PKG}
 	if [ "${1:0:$pkglen}" = "$PKG" ] ; then
@@ -105,7 +104,7 @@ doexe() {
 # install icons
 doicon() {
 	local ICONDIR
-	[ $# -eq 0 ] && die "error doicon function: not enough arguments"
+	[ $# -eq 0 ] && die "error: doicon: not enough arguments"
 	ICONDIR=$PKG/usr/share/pixmaps
 	doins $ICONDIR $@
 }
@@ -115,10 +114,10 @@ doicon() {
 # $PKG is implied and not required
 doins() {
 	local DEST pkglen
-	[ $# -lt 2 ] && die "error doins function: not enough arguments"
+	[ $# -lt 2 ] && die "error: doins: not enough arguments"
 	# see if $PKG was passed
 	pkglen=${#PKG}
-	[ $pkglen -eq 0 ] && die "error doins function: $PKG not defined???"
+	[ $pkglen -eq 0 ] && die "error: doins: $PKG not defined???"
 	if [ "${1:0:$pkglen}" = "$PKG" ] ; then
 		DEST=$1
 	else
@@ -137,7 +136,7 @@ doins() {
 # adhoc move something to man directory
 doman() {
 	local MANDIRBASE MANDIR
-	[ $# -eq 0 ] && die "error doman function: not enough arguments"
+	[ $# -eq 0 ] && die "error: doman: not enough arguments"
 	MANDIRBASE=$PKG/usr/man
 	for i in "$@"; do
 		# get man page suffix and make dir if required
@@ -149,7 +148,7 @@ doman() {
 # install menus
 domenu() {
 	local APPDIR
-	[ $# -eq 0 ] && die "error domenu function: not enough arguments"
+	[ $# -eq 0 ] && die "error: domenu: not enough arguments"
 	APPDIR=$PKG/usr/share/applications
 	doins $APPDIR $@
 }
@@ -158,7 +157,7 @@ domenu() {
 # if first arg is NOEXE then won't be executable
 dorc() {
 	local RCDIR NOEXE
-	[ $# -eq 0 ] && die "error dorc function: not enough arguments"
+	[ $# -eq 0 ] && die "error: dorc: not enough arguments"
 	if [ "$1" = "NOEXE" ] ; then
 		NOEXE=yes
 		shift
@@ -176,7 +175,7 @@ dorc() {
 # pass "SYS" in first parameter to install to /sbin instead of /usr/sbin
 dosbin() {
 	local SBINDIR
-	[ $# -eq 0 ] && die "error dosbin function: not enough arguments"
+	[ $# -eq 0 ] && die "error: dosbin: not enough arguments"
 	if [ "$1" = "SYS" ] ; then
 		SBINDIR=$PKG/sbin
 		shift
@@ -189,7 +188,7 @@ dosbin() {
 # install files in package share dir
 doshare() {
 	local SHAREDIR
-	[ $# -eq 0 ] && die "error doshare function: not enough arguments"
+	[ $# -eq 0 ] && die "error: doshare: not enough arguments"
 	SHAREDIR=$PKG/usr/share/$NAME
 	doins $SHAREDIR $@
 }
@@ -310,7 +309,7 @@ get_args() {
 		exit 0
 	elif [ $# -gt 1 ] ; then
 		usage
-		die "command line: error only one argument allowed: $*"
+		die "command line: error: only one argument allowed: $*"
 	else
 		return
 	fi	
