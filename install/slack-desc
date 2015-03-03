@@ -1,4 +1,4 @@
-makesbld: makesbld-0.32 (SlackBuild creator)
+makesbld: makesbld-%%ver%% (SlackBuild creator)
 makesbld:
 makesbld: This program provides a set of functions that make
 makesbld: creating and maintaining SlackBuild files easier. It

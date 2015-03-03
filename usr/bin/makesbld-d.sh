@@ -3,6 +3,8 @@
 # SlackBuild creator for use with dialog
 # Peter Hyman <pete@peterhyman.com>
 
+SBVERSION=%%ver%%
+
 die() {
 	echo "$1"
 	exit 1
@@ -46,7 +48,7 @@ fi
 
 if [ "$FTYPE" = "CVS" ] ; then
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006 - Version 0.32\n\
+		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -61,7 +63,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	2> /tmp/makesbld.dialog
 elif [ "$FTYPE" = "SVN" ] ; then
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006 - Version 0.32\n\
+		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -76,7 +78,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	2> /tmp/makesbld.dialog
 else	
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman\n\
+		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -144,6 +146,7 @@ cp $SKELDIR/$SKELNAME $DESTDIR/$PROGRAM.SlackBuild
 DATE=`date +%D`
 sed -e 	"/^## Build/s%$%$PROGRAM%" \
 	-e "s%^## Creator:%## Creator: $CREATOR%" \
+	-e "s%^## Created by:%## Created by: makesbld Version: $SBVERSION%" \
 	-e "s%^## Date:%## Date: $DATE%" \
 	-e "s%^## Requirements:%## Requirements: $REQUIREMENTS%" \
 	-e "s%^## Notes:%## Notes: $NOTES%" \

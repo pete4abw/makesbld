@@ -4,10 +4,14 @@
 # use cvs, svn, or perl as option
 # Peter Hyman <pete@peterhyman.com>
 
+SBVERSION=%%ver%%
+
 die() {
 	echo "$1"
 	exit 1
 }
+
+echo "makesbld Creator: Peter Hyman 2006-2015 - Version: $SBVERSION" 
 
 if [ $# -eq 1 ] ; then
 	if [ "$1" = "cvs" -o "$1" = "CVS" ] ; then
@@ -223,6 +227,7 @@ cp $SKELDIR/$SKELNAME $DESTDIR/$PROGRAM.SlackBuild
 DATE=`date +%D`
 sed -e 	"/^## Build/s%$%$PROGRAM%" \
 	-e "s%^## Creator:%## Creator: $CREATOR%" \
+	-e "s%^## Created by:%## Created by: makesbld Version: $SBVERSION%" \
 	-e "s%^## Date:%## Date: $DATE%" \
 	-e "s%^## Requirements:%## Requirements: $REQUIREMENTS%" \
 	-e "s%^## Notes:%## Notes: $NOTES%" \

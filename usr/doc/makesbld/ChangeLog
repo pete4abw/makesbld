@@ -1,3 +1,7 @@
+March 2015
+	Bump to 0.40
+	Create VERSION file and package creator script
+	fix typo in man
 March 2012
 	Bump to 0.33
 	Update tar and patch routines to accept .xz files
