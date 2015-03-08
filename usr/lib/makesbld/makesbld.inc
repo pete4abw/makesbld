@@ -249,6 +249,16 @@ fetch_svn() {
 	$SVN $SVN_OPTIONS $SVN_SERVER/$SVN_MODULE || die "error: svn"
 }
 
+#   GIT = git program
+#   GIT_OPTIONS = clone and clone options
+#   GIT_SERVER = git server location
+#   GIT_NAME = git filename
+fetch_git() {
+	# clone git from TMP directory
+	cd $TMP
+	$GIT $GIT_OPTIONS $GIT_SERVER/$GIT_NAME
+}
+
 fix_source() {
 	chown -R root:root $SRC
 	find $SRC -type f -perm /0111 -print0 | xargs -0r chmod -- 755

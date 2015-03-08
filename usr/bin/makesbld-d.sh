@@ -9,7 +9,6 @@ die() {
 	echo "$1"
 	exit 1
 }
-
 if [ $# -eq 1 ] ; then
 	if [ "$1" = "cvs" -o "$1" = "CVS" ] ; then
 		FTYPE=CVS
@@ -20,6 +19,9 @@ if [ $# -eq 1 ] ; then
 	elif [ "$1" = "perl" -o "$1" = "PERL" ] ; then
 		FTYPE=PERL
 		SKELNAME=makesbld.perl.skel
+	elif [ "$1" = "git" -o "$1" = "GIT" ] ; then
+		FTYPE=GIT
+		SKELNAME=makesbld.git.skel
 	else
 		die "Invalid Option: makesb.sh [cvs|svn|perl]"
 	fi
@@ -76,6 +78,21 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	"Notes:" 8 1 " " 8 15 40 40 \
 	"Creator:" 9 1 "$CREATOR " 9 15 30 20 \
 	2> /tmp/makesbld.dialog
+elif [ "$FTYPE" = "GIT" ] ; then
+	dialog --title "makesbld Creator" \
+		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
+Build Directory: $SBDIR\n\
+Complete variables to create your SlackBuild file" 18 60 9 \
+	"Program Name:" 1 1 " " 1 15 30 30 \
+	"Version:" 2 1 " " 2 15 20 20 \
+	"Description:" 3 1 " " 3 15 40 40 \
+	"Revision:" 4 1 " " 4 15 6 6 \
+	"GIT server:" 5 1 " " 5 15 40 80 \
+	"GIT Name:" 6 1 " " 6 15 40 60 \
+	"Requirements:" 7 1 " " 7 15 40 40 \
+	"Notes:" 8 1 " " 8 15 40 40 \
+	"Creator:" 9 1 "$CREATOR " 9 15 30 20 \
+	2> /tmp/makesbld.dialog
 else	
 	dialog --title "makesbld Creator" \
 		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
@@ -116,6 +133,8 @@ do
 				CVS_PSERVER=$TMPVAR
 			elif [ "$FTYPE" = "SVN" ] ; then
 				SVN_SERVER=$TMPVAR
+			elif [ "$FTYPE" = "GIT" ] ; then
+				GIT_SERVER=$TMPVAR
 			else
 				MIRROR=$TMPVAR
 			fi
@@ -124,6 +143,8 @@ do
 				CVS_MODULE=$TMPVAR
 			elif [ "$FTYPE" = "SVN" ] ; then
 				SVN_MODULE=$TMPVAR
+			elif [ "$FTYPE" = "GIT" ] ; then
+				GIT_NAME=$TMPVAR
 			else
 				TAR_NAME=$TMPVAR
 			fi
@@ -165,6 +186,10 @@ if [ "$FTYPE" = "CVS" ] ; then
 elif [ "$FTYPE" = "SVN" ] ; then
 	sed -e 	"s%^SVN_SERVER=%SVN_SERVER=$SVN_SERVER%" \
 	-e "s%^SVN_MODULE=%SVN_MODULE=$SVN_MODULE%" \
+	-i $DESTDIR/$PROGRAM.SlackBuild
+elif [ "$FTYPE" = "GIT" ] ; then
+	sed -e 	"s%^GIT_SERVER=%GIT_SERVER=$GIT_SERVER%" \
+	-e "s%^GIT_NAME=%GIT_NAME=$GIT_NAME%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 else
 	sed -e 	"s~^SRC_LOC=~SRC_LOC=\"$MIRROR\"~" \

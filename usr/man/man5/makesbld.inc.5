@@ -159,7 +159,7 @@ will be marked (0644).
 The
 .B fetch
 functions retrieve source files from a http or ftp location
-as well as from cvs or svn.
+as well as from cvs, svn or git.
 .HP
 .B fetch
 \- fetch a tarball.
@@ -212,7 +212,23 @@ must be defined in the
 .I program.SlackBuild
 file and contain the svn server location and the
 name and directory of the module to fetch.
-
+.HP
+.B fetch-git
+\- fetch source from git server.
+The 
+.B fetch-git
+function requires the following variables to be set on entry.
+From
+.IR makesbld.conf ,
+.BR GIT\ and\ GIT_OPTIONS
+must contain the location for the git program and
+GIT_OPTIONS must contain any options that are fixed
+for git.
+.BR GIT\ and\ GIT_OPTIONS
+must be defined in the
+.I program.SlackBuild
+file and directory of the module to fetch. When git is used, the unpack
+function must be skipped as there is no tar file to unpack.
 .P
 The zip and strip functions (to be completed)
 .HP

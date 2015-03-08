@@ -29,7 +29,8 @@ etc2new() - rename all files in $PKG/etc to filename.new
             plug it in and use it.
 fetch() - function to fetch files with wget
 fetch_cvs() - function to fetch files with cvs
-fetch_svn() - function to getch files with svn
+fetch_svn() - function to fetch files with svn
+fetch_git() - function to fetch files with git clone
 fix_source() - change perms and ownership of $SRC
 get_args() - process command line args. Valid options are:
 	setup, fetch, unpack, fix[_source], patch, compile, install,

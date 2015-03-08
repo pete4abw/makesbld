@@ -1,4 +1,7 @@
 March 2015
+	Bump to 0.41
+	add Git Fetch
+
 	Bump to 0.40
 	Create VERSION file and package creator script
 	fix typo in man
