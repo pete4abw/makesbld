@@ -33,6 +33,9 @@ PKG_NAME=$NAME-$VERSION-$ARCH-$BUILD.$PKG_EXT
 # add extension to TAR_NAME and change
 SRC_NAME=$NAME-$VERSION
 TAR_NAME=$SRC_NAME.
+# If Project is on Sourceforge, project name not always
+# the same as download name. Edit as necessary
+SFPROJECT=$NAME
 
 MIRRORS="/etc/makesbld/mirrors.conf"
 [ -r $MIRRORS ] && source $MIRRORS
