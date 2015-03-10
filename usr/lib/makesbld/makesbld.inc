@@ -533,6 +533,12 @@ usage() {
 		echo "SVN_SERVER  - $SVN_SERVER"
 		echo "SVN_MODULE  - $SVN_MODULE"
 		echo "SVN         - $SVN | options $SVN_OPTIONS" 
+	elif [ -n "$GIT_SERVER" ] ; then
+		echo -e "\nGIT Variables used:"
+		echo      "-------------------"
+		echo "GIT_SERVER  - $GIT_SERVER"
+		echo "GIT_NAME    - $GIT_NAME"
+		echo "GIT         - $GIT | options $GIT_OPTIONS" 
 	fi
 	echo -e "\nInternal Variables set:"
 	echo      "-----------------------"
