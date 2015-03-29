@@ -51,7 +51,7 @@ SHAREDIR=$PKG/usr/share/$NAME
 
 # retrieve source to $CWD
 local_fetch() {
-	fetch-git
+	fetch_git
 	return
 }
 

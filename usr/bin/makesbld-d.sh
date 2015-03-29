@@ -72,7 +72,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	"Version:" 2 1 " " 2 15 20 20 \
 	"Description:" 3 1 " " 3 15 40 40 \
 	"Revision:" 4 1 " " 4 15 6 6 \
-	"SVN server:" 5 1 " " 5 15 40 80 \
+	"SVN Server:" 5 1 " " 5 15 40 80 \
 	"SVN Module:" 6 1 " " 6 15 40 60 \
 	"Requirements:" 7 1 " " 7 15 40 40 \
 	"Notes:" 8 1 " " 8 15 40 40 \
@@ -87,7 +87,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	"Version:" 2 1 " " 2 15 20 20 \
 	"Description:" 3 1 " " 3 15 40 40 \
 	"Revision:" 4 1 " " 4 15 6 6 \
-	"GIT server:" 5 1 " " 5 15 40 80 \
+	"GIT Server:" 5 1 " " 5 15 40 80 \
 	"GIT Name:" 6 1 " " 6 15 40 60 \
 	"Requirements:" 7 1 " " 7 15 40 40 \
 	"Notes:" 8 1 " " 8 15 40 40 \

@@ -1,0 +1,131 @@
+.\" makesbld.conf reference man page
+.hlm 0
+.TH makesbld.conf 5 "makesbld.conf Reference"
+
+.SH NAME
+makesbld.conf \- Constant variables for makesbld
+
+.SH DESCRIPTION
+The 
+.B makesbld.conf
+file contains variables used by makesbld. These constants control
+program execution. They may be unset/reset within individual
+SlackBuild files and in the ~/.makesbld/user.cfg file.
+.B makesbld.conf
+is sourced into each \.SlackBuild file.
+.HP
+.PD 0
+.B MYIN=${MYIN:-}
+# set to your initials that will append to package files
+.HP
+.BR CWD =`pwd`
+.HP
+.BR TMP ="${TMP:-/tmp}"
+# set to base build directory
+.HP
+.BR PKG_DIR =${PKG_DIR:-$CWD}
+# set to location to install package file
+.HP
+.BR PKG_EXT =txz
+.HP
+.BR NICENESS =19
+.HP
+.B NICE 
+="/usr/bin/nice -n $NICENESS"
+.HP
+.BR ARCH ="${ARCH:-i486}"
+.HP 
+.BR MAKEOPTS =-j8
+.HP
+.B CFLAGS 
+= #set according to $ARCH
+.HP
+.B LIBDIRSUFFIX 
+= #set according to $ARCH
+.HP
+.B CONFIGURE_DEFAULTS 
+="--prefix=/usr \\
+.IP 
+--sysconfdir=/etc \\
+.IP 
+--localstatedir=/var \\
+.IP 
+--libdir=/usr/lib${LIBDIRSUFFIX} \\
+.IP 
+--build=$ARCH-slackware-linux \\
+.IP 
+--host=$ARCH-slackware-linux\\" 
+.HP
+.BR CXXFLAGS ="$CFLAGS"
+.HP
+.B 
+CC 
+=`which gcc`
+.HP
+.B CPP 
+="$CC -E"
+.HP
+.B CXX 
+=`which g++`
+.HP
+.B CXXCPP 
+="$CXX -E" 
+.HP
+.BR SCRIPTFILE "=/usr/lib/makesbld/makesbld.inc"
+.HP
+.B WGET 
+="$NICE $(which wget)"
+.P
+.B WGET_OPTIONS 
+="-c -t 5"
+.P
+.B CVS 
+="$NICE $(which cvs)"
+.P
+.B CVS_OPTIONS 
+="-z3 -f"
+.P
+.B SVN 
+="$NICE $(which svn)"
+.P
+.B SVN_OPTIONS 
+="co"
+.P
+.B GIT 
+="$NICE $(which git)"
+.P
+.B GIT_OPTIONS 
+="clone"
+.HP
+.B DOCFILES
+="ABOUT ABOUT-NLS ANNOUNCE AUTHORS CONFIGURATION CHANGES \
+COPYING COPYRIGHT CREDITS ChangeLog Changelog CHANGELOG CONTRIBUTORS \
+*FAQ* FEATURES FILES HACKING History HISTORY INSTALL* LICENSE LSM \
+MANIFEST NEWS *README* *Readme* SITES *RELEASE* RELNOTES THANKS TIPS \
+TODO VERSION CONFIGURATION* GPL License Doc doc Docs* docs* Roadmap \
+ROADMAP *BUGS* index.ht* *INDEX* Changes"
+.PD 1
+.SH SEE ALSO
+.BR makesbld (1), makesbld.inc (5)
+
+.SH BUGS
+Let me know!
+
+.SH ACKNOWLEDGMENTS
+Jim Simmons at http://www.linuxpackages.net, whose original
+.B slackbuilds
+package got me started on this project.
+.P
+Lasse Collin from http://www.tukaani.org for help and
+necessary corrections to several of the functions in this
+file. The Tukanni project offers its own build scripting
+system, called
+.BR tukbuild .
+.P
+Gentoo Linux at http://www.gentoo.org, whose ebuild system
+is the gold standard for package management, creation, and
+distribution. The
+.B do...
+functions are shamelessly mimmicked from Gentoo.
+.SH AUTHOR
+Peter Hyman <pete@peterhyman.com>

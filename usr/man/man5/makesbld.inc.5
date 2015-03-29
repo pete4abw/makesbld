@@ -179,10 +179,10 @@ file and contain the http or ftp location of the
 file
 .BR TAR_NAME .
 .HP
-.B fetch-cvs
+.B fetch_cvs
 \- fetch source from cvs.
 The
-.B fetch-cvs
+.B fetch_cvs
 function requires the following variables to be set on entry.
 From
 .IR makesbld.conf ,
@@ -196,10 +196,10 @@ must be defined in the
 file and contain the cvs server location and the
 name and directory of the module to fetch.
 .HP
-.B fetch-svn
+.B fetch_svn
 \- fetch source from svn.
 The
-.B fetch-svn
+.B fetch_svn
 function requires the following variables to be set on entry.
 From
 .IR makesbld.conf ,
@@ -213,10 +213,10 @@ must be defined in the
 file and contain the svn server location and the
 name and directory of the module to fetch.
 .HP
-.B fetch-git
+.B fetch_git
 \- fetch source from git server.
 The 
-.B fetch-git
+.B fetch_git
 function requires the following variables to be set on entry.
 From
 .IR makesbld.conf ,
@@ -252,7 +252,7 @@ strip_lib() - strip library files in $PKG
 strip_static() - strip static files in $PKG
 
 .SH SEE ALSO
-.BR makesbld (1)
+.BR makesbld (1), makesbld.conf (5)
 
 .SH BUGS
 Let me know!

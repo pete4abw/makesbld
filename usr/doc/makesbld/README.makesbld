@@ -11,7 +11,7 @@ an ncurses input mode.
 
 Each program takes 1 of 3 optional paramaters or none.
 
-makesbld[d].sh [ cvs | svn | perl ]
+makesbld[d].sh [ cvs | svn | perl | git ]
 
 If cvs is selected, the skeleton SlackBuild file for fetching cvs
 source is used. If svn is selected, the skeleton SlackBuild file
@@ -25,7 +25,8 @@ for determing the SlackBuild home directory and the Creator's
 name.
 
 Prompts from each are very similar with only the CVS PSERVER and
-CVS MODULE, SVN SERVER and SVN MODULE differing.
+CVS MODULE, SVN SERVER and SVN MODULE, GIT SERVER and GIT NAME
+differing.
 
 Standard or Perl prompts from makesbld.sh:
 
@@ -85,6 +86,9 @@ Type Selection:
 
 The SVN prompts would replace 5 and 6 with SVN SERVER and SVN
 MODULE.
+
+The GIT prompts would replace 5 and 6 with GIT SERVER and GIT
+NAME.
 
 After reviewing the settings and pressing `o' or `O' the SlackBuild
 is created with the data provided.
