@@ -62,7 +62,7 @@ only parts of a build. The
 .I processes
 that can be called are:
 .IR setup ,\  fetch ,\  unpack ,\  fix[_source] ,\ 
-.IR patch ,\  compile ,\  install ,\  desc[ription] ,
+.IR patch ,\  check ,\ compile ,\  install ,\  desc[ription] ,
 .IR doinst ,\  build ,\  cleanup ,\  \--help ,
 .IR \-h ,\  \-help .
 .B getargs
@@ -73,6 +73,11 @@ a usage screen is shown and the program exits.
 \- this function is called in each SlackBuild to set up the
 Source and Package directories that will be used throughout
 the process.
+.HP
+.BI check_req_pkg\ 'pkg...pkg\ >|>=|=|=<|<\ version'
+\- check_req_pkg will verify package(s) and/or their versions
+exist on the system using the pkg-config program. Program will
+abort if any not found or version minimum/maximum not satisfied.
 .HP
 .BI spatch\  file(s)
 \- spatch will patch files in the source tree with the file(s)

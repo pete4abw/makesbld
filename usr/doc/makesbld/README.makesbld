@@ -9,7 +9,7 @@ input.
 makesbld-d.sh is also terminal-based, but uses the dialog program for
 an ncurses input mode.
 
-Each program takes 1 of 3 optional paramaters or none.
+Each program takes 1 of 4 optional paramaters or none.
 
 makesbld[d].sh [ cvs | svn | perl | git ]
 

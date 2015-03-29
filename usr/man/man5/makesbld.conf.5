@@ -74,28 +74,33 @@ CC
 .BR SCRIPTFILE "=/usr/lib/makesbld/makesbld.inc"
 .HP
 .B WGET 
-="$NICE $(which wget)"
+="$(which wget)"
 .P
 .B WGET_OPTIONS 
 ="-c -t 5"
 .P
 .B CVS 
-="$NICE $(which cvs)"
+="$(which cvs)"
 .P
 .B CVS_OPTIONS 
 ="-z3 -f"
 .P
 .B SVN 
-="$NICE $(which svn)"
+="$(which svn)"
 .P
 .B SVN_OPTIONS 
 ="co"
 .P
 .B GIT 
-="$NICE $(which git)"
+="$(which git)"
 .P
 .B GIT_OPTIONS 
-="clone"
+="clone".P
+.B PC 
+="$(which pkg-config)"
+.P
+.B PC_OPTIONS 
+="--exists --print-errors"
 .HP
 .B DOCFILES
 ="ABOUT ABOUT-NLS ANNOUNCE AUTHORS CONFIGURATION CHANGES \

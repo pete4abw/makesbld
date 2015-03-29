@@ -6,6 +6,7 @@ In the makesbld.inc file are a number of functions that are used to
 manage the SlackBuild process. They are:
 
 bin_perms()  - change perms of executables
+check_req-pkg() - check if required packages exist
 cleanup() - removes work directories $SRC and $PKG
 create_docs () - create most document files and place them
 die()  - abort on error function

@@ -27,6 +27,7 @@ VERSION=
 REVISION=
 BUILD=$REVISION$MYIN
 DESCRIPTION=
+REQ=
 PKG_NAME=$NAME-$VERSION-$ARCH-$BUILD.$PKG_EXT
 
 # add mirror location to SRC_LOC
@@ -63,6 +64,11 @@ local_unpack() {
 	cd $TMP
 	unpack $CWD/$TAR_NAME
 	return
+}
+
+# check for required packages. REQ holds requirements
+local_check_req_pkg() {
+	#check_req_pkg
 }
 
 # fix source code perms or other hacks like patches as may be required
@@ -166,6 +172,7 @@ pkg_setup
 local_fetch
 local_unpack
 local_fix_source
+local_check_req_pkg
 patch
 compile
 install

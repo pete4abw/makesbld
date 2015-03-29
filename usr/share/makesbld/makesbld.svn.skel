@@ -27,6 +27,7 @@ VERSION=
 REVISION=
 BUILD=$REVISION$MYIN
 DESCRIPTION=
+REQ=
 PKG_NAME=$NAME-$VERSION-$ARCH-$BUILD.$PKG_EXT
 
 # SVN information, if needed
@@ -55,6 +56,11 @@ local_fix_source() {
 	cd $SRC
 	fix_source
 	return
+}
+
+# check for required packages. REQ holds requirements
+local_check_req_pkg() {
+        #check_req_pkg
 }
 
 # patch source. Uncomment to use
@@ -148,6 +154,7 @@ get_args "$@"	# process command line
 pkg_setup
 local_fetch
 local_fix_source
+local_check_req_pkg
 patch
 compile
 install

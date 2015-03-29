@@ -1,6 +1,6 @@
 # makesbld.inc
 # contains reusable code
-# December 2006
+# 2006...2015
 # Peter Hyman <pete@peterhyman.com>
 
 # Call this to make sure bin and sbin are the correct groups
@@ -14,6 +14,20 @@ bin_perms() {
 		fi
 	done
 } 
+
+# check for required packages
+# arguments must be quoted and version options not required
+# $REQ holds argument
+# ex: REQ='pkg1 pkg2 >|>=|=|<=|< ver ...'
+# versions must be separated by spaces
+# $PC and $PC_OPTIONS may be overridden in conf file
+check_req_pkg() {
+	# nothing to do if $REQ is 0
+	[ ${#REQ} -eq 0  ] && return
+        echo "Checking for package(s): $REQ"
+        $PC $PC_OPTIONS $REQ
+        [ $? -ne 0 ] && die "error: required package(s) not found"
+}
 
 # the cleanup function is for removing the SRC and PKG directories
 # it can be called from the command line or placed explicitly into
@@ -289,6 +303,9 @@ get_args() {
 		"patch")
 			patch
 			;;
+		"check" | "check_req_pkg")
+			local_check_req_pkg
+			;;
 		"compile")
 			compile
 			;;
@@ -493,34 +510,36 @@ usage() {
 	echo "$NAME.SlackBuild usage"
 	echo "----------------------------------------------------------------------"
 	echo "with none or one of these options"
-	echo "  setup         - execute pkg_setup function"
-	echo "  fetch         - download source tarball or cvs module"
-	echo "  unpack        - unpack tarball"
-	echo "  fix[_source]  - fix perms of Source directory"
-	echo "  patch         - patch source files"
-	echo "  compile       - compile source"
-	echo "  install       - run make install and prepare sources for package build"
-	echo "  desc[ription] - create slack-desc file and any others needed"
-	echo "  doinst        - create doinst.sh file"
-	echo "  build[_pkg]   - make package"
+	echo "  setup           - execute pkg_setup function"
+	echo "  fetch           - download source tarball or cvs module"
+	echo "  unpack          - unpack tarball"
+	echo "  fix[_source]    - fix perms of Source directory"
+	echo "  patch           - patch source files"
+	echo "  check[_req_pkg] - check required packages and versions exist"
+	echo "  compile         - compile source"
+	echo "  install         - run make install and prepare sources for package build"
+	echo "  desc[ription]   - create slack-desc file and any others needed"
+	echo "  doinst          - create doinst.sh file"
+	echo "  build[_pkg]     - make package"
 	echo -e "\nVariables used:"
 	echo      "---------------"
-	echo "NAME            - $NAME"
-	echo "VERSION         - $VERSION"
-	echo "REVISION        - $REVISION"
-	echo "BUILD           - $BUILD"
-	echo "DESCRIPTION     - $DESCRIPTION"
-	echo "DOCDIR          - $DOCDIR"
-	echo "SHAREDIR        - $SHAREDIR"
-	echo "SRC_LOC         - $SRC_LOC"
-	echo "SRC_NAME        - $SRC_NAME"
-	echo "SRC_EXTRACT_DIR - $SRC_EXTRACT_DIR"
-	echo "TAR_NAME        - $TAR_NAME"
-	echo "SRC             - $SRC"
-	echo "PKG             - $PKG"
-	echo "PKG_DIR         - $PKG_DIR"
-	echo "PKG_NAME        - $PKG_NAME"
-	echo "TMP             - $TMP"
+	echo "NAME              - $NAME"
+	echo "VERSION           - $VERSION"
+	echo "REVISION          - $REVISION"
+	echo "REQUIRED PACKAGES - $REQ"
+	echo "BUILD             - $BUILD"
+	echo "DESCRIPTION       - $DESCRIPTION"
+	echo "DOCDIR            - $DOCDIR"
+	echo "SHAREDIR          - $SHAREDIR"
+	echo "SRC_LOC           - $SRC_LOC"
+	echo "SRC_NAME          - $SRC_NAME"
+	echo "SRC_EXTRACT_DIR   - $SRC_EXTRACT_DIR"
+	echo "TAR_NAME          - $TAR_NAME"
+	echo "SRC               - $SRC"
+	echo "PKG               - $PKG"
+	echo "PKG_DIR           - $PKG_DIR"
+	echo "PKG_NAME          - $PKG_NAME"
+	echo "TMP               - $TMP"
 	if [ -n "$CVS_PSERVER" ] ; then
 		echo -e "\nCVS Variables used:"
 		echo      "-------------------"

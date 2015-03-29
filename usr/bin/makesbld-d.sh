@@ -175,6 +175,7 @@ sed -e 	"/^## Build/s%$%$PROGRAM%" \
 	-e "s%^VERSION=%VERSION=$VERSION%" \
 	-e "s%^REVISION=%REVISION=$REVISION%" \
 	-e "s%^DESCRIPTION=%DESCRIPTION=\"$DESCRIPTION\"%" \
+	-e "s%^REQ=%REQ=\'$REQUIREMENTS\'%" \
 	-e "s%^MYIN=%MYIN=\"$MYIN\"%" \
 	-e "s%^PKG_DIR=%PKG_DIR=\"$PKG_DIR\"%" \
 	-e "s%^ARCH=%ARCH=\"$ARCH\"%" \
