@@ -1,6 +1,6 @@
 # makesbld.inc
 # contains reusable code
-# 2006...2015
+# 2006...2018
 # Peter Hyman <pete@peterhyman.com>
 
 # Call this to make sure bin and sbin are the correct groups
@@ -93,12 +93,21 @@ dodoc() {
 }
 
 # install any files to $PKG/etc
+# -d DIR as first argument will create subdirectory under etc
+# other files will be copied to /etc or /etc/DIR
 doetc()
 {
 	local ETCDIR
 	[ $# -eq 0 ] && die "error: doetc: not enough arguments"
-	ETCDIR=$PKG/etc
-	doetc $ETCDIR $@
+	if [ "$1" = "-d" ] ; then
+		[ $# -lt 3 ] && die "error: doetc: -d not followed by enough arguments"
+		shift
+		ETCDIR=$PKG/etc/$1
+		shift
+	else
+		ETCDIR=$PKG/etc
+	fi
+	doins $ETCDIR $@
 }
 
 # install files and mark executable
@@ -182,7 +191,7 @@ dorc() {
 	doins $RCDIR $@
 	# make executable!
 	if [ -z "$NOEXE" ] ; then
-		chmod 0755 $RCDIR/*
+		chmod -R 0755 $RCDIR
 	fi
 }
 
@@ -324,7 +333,7 @@ get_args() {
 		"cleanup")
 			cleanup
 			;;
-		"-help" | "-h" | "--help")
+		"-help" | "-h" | "--help" | "usage")
 			usage
 			;;
 		*)
