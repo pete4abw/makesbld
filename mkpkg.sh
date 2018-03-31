@@ -25,6 +25,9 @@ do
 	sed -i -e "s^%%ver%%^$VERSION^" $file
 done 
 
+# delete any backup files 
+find . -type f -name '*~' -print0 | xargs -0re rm
+
 # rename doc dir
 mv -v usr/doc/${PKGNAME} usr/doc/${PKGNAME}-${VERSION}
 
