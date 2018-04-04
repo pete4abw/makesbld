@@ -12,7 +12,7 @@ create_docs () - create most document files and place them
 die()  - abort on error function
 dobin() [SYS] - place a file in /usr/bin or /bin (with SYS parameter)
 dodoc() - place files or directories into $PKG/usr/doc/$SRC_NAME
-doetc() - place files or directories into $PKG/etc
+doetc() {-d etcdir} - place files or directories into $PKG/etc{/etcdir}
 doexe() dir file(s) - place files into directories and mark executable (0755)
 doicon() file(s) - place a file into $PKG/usr/share/pixmaps
 doins() dir file(s) - place a file wherever you say to

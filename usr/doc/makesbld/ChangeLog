@@ -1,4 +1,13 @@
+March 2018
+	Bump to 0.51
+	add -d option to doetc function
+	update mkpkg.sh to remove any backup files
+	update manpages and README.FUNCTIONS
 March 2015
+	Bump to 0.50
+	add pkg-config check
+	update doc
+	add manpage for conf file
 	Bump to 0.41
 	add Git Fetch
 
