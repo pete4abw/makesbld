@@ -1,5 +1,5 @@
 .\" makesbld function reference man page
-.TH makesbld.inc 5 1/2007 "Linux" "makesbld Function Reference"
+.TH makesbld.inc 5 4/2018 "Linux" "makesbld Function Reference"
 
 .SH NAME
 makesbld.inc \- Reusable Functions for makesbld
@@ -63,7 +63,7 @@ only parts of a build. The
 that can be called are:
 .IR setup ,\  fetch ,\  unpack ,\  fix[_source] ,\ 
 .IR patch ,\  check ,\ compile ,\  install ,\  desc[ription] ,
-.IR doinst ,\  build ,\  cleanup ,\  \--help ,
+.IR doinst ,\  build ,\  cleanup ,\ usage ,\ \--help ,
 .IR \-h ,\  \-help .
 .B getargs
 accepts only one argument and exits. If an invalid argument is passed
@@ -117,8 +117,8 @@ or
 manually.
 .HP
 .B doetc
-.I file(s)
-\- place files into /etc
+.I {-d etcsubdir} file(s)
+\- place files into /etc{/etcsubdir}
 .HP
 .B doexe
 .I dir file(s)
