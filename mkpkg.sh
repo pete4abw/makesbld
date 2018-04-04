@@ -26,7 +26,7 @@ do
 done 
 
 # delete any backup files 
-find . -type f -name '*~' -print0 | xargs -0re rm
+find . -type f -name '*~' -print0 | xargs -0r rm
 
 # rename doc dir
 mv -v usr/doc/${PKGNAME} usr/doc/${PKGNAME}-${VERSION}
