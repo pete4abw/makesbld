@@ -25,6 +25,12 @@ do
 	sed -i -e "s^%%ver%%^$VERSION^" $file
 done 
 
+for file in mirrors.conf makesbld.conf
+do
+	(cd etc/makesbld; mv $file $file.new)
+done
+
+
 # delete any backup files 
 find . -type f -name '*~' -print0 | xargs -0r rm
 
