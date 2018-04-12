@@ -69,6 +69,7 @@ local_unpack() {
 # check for required packages. REQ holds requirements
 local_check_req_pkg() {
 	#check_req_pkg
+	return
 }
 
 # fix source code perms or other hacks like patches as may be required

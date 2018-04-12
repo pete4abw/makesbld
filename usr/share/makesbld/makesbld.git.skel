@@ -74,6 +74,7 @@ local_fix_source() {
 # check for required packages. REQ holds requirements
 local_check_req_pkg() {
         #check_req_pkg
+	return
 }
 
 # patch source. Uncomment to use

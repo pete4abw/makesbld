@@ -50,7 +50,7 @@ fi
 
 if [ "$FTYPE" = "CVS" ] ; then
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
+		--cr-wrap --form "Peter Hyman 2006-2018 - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -65,7 +65,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	2> /tmp/makesbld.dialog
 elif [ "$FTYPE" = "SVN" ] ; then
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
+		--cr-wrap --form "Peter Hyman 2006-2018 - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -80,7 +80,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	2> /tmp/makesbld.dialog
 elif [ "$FTYPE" = "GIT" ] ; then
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
+		--cr-wrap --form "Peter Hyman 2006-2018 - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -95,7 +95,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	2> /tmp/makesbld.dialog
 else	
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006-2015 - Version: $SBVERSION\n\
+		--cr-wrap --form "Peter Hyman 2006-2018 - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -193,7 +193,7 @@ elif [ "$FTYPE" = "GIT" ] ; then
 	-e "s%^GIT_NAME=%GIT_NAME=$GIT_NAME%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 else
-	sed -e 	"s~^SRC_LOC=~SRC_LOC=\"$MIRROR\"~" \
+	sed -e 	"s|^SRC_LOC=|SRC_LOC=\"$MIRROR\"|" \
 	-e "s%^TAR_NAME=.*$%TAR_NAME=$TAR_NAME%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 fi

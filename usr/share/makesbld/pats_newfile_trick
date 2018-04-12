@@ -5,6 +5,9 @@
 #
 # trick for renaming new and old files borrowed from Slackware
 # installation scripts by P. Volkerding
+
+# To manually create a doinst.sh file, remove the \ escapes.
+
 config() {
     NEW="\$1"
     OLD="\`dirname \$NEW\`/\`basename \$NEW .new\`"
