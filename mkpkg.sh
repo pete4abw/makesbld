@@ -8,9 +8,10 @@
 PKGNAME=makesbld
 VERSION=`cat VERSION|grep VERSION|cut -d= -f2`
 COPYRIGHTDATE=`cat VERSION|grep COPYRIGHTDATE|cut -d= -f2`
-PKGDIR=/tmp
-BUILDDIR=${PKGDIR}/${PKGNAME}
-REV=1
+REV=`cat VERSION|grep REV|cut -d= -f2`
+PKGDIR=$PWD/../
+TMPDIR=/tmp
+BUILDDIR=${TMPDIR}/${PKGNAME}
 
 # copy files over to temp
 [ -d $BUILDDIR ] && rm -fr $BUILDDIR
