@@ -8,4 +8,4 @@ makesbld: The original idea for this comes from Jim Simmons
 makesbld: at linuxpackages.net. Ideas for layout and functions
 makesbld: come in part from Gentoo's ebuild system.
 makesbld:
-makesbld: Peter Hyman <pete@peterhyman.com>
+makesbld: (c) %%date%% Peter Hyman <pete@peterhyman.com>

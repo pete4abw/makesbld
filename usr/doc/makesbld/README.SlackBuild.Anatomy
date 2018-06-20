@@ -24,6 +24,9 @@ CVS_MODULE - project directory for cvs
 [ the svn skel file has the following ]
 SVN_SERVER - svn server
 SVN_MODULE - project directory for svn
+[ the git skel file has the following ]
+GIT_SERVER - git server
+GIT_NAME - name of project to fetch
 
 These variables are derived from the above or may be modified.
 
@@ -39,9 +42,10 @@ The following functions exist in SlackBuild files. These functions
 may easily be added to or replace stock functions stored in
 the makesbld.inc file
 
-local_fetch() - fetch software tarball or cvs
+local_fetch() - fetch software tarball or cvs, svn, git
 local_unpack() - unpack downloaded software (not needed for cvs)
 local_fix_source() - fix permissions and ownership of source
+local_check_req_pkg() - call pkgconfig to verify required packages
 patch() - apply software patches
 compile() - configure and make software using defaults in
 	    /etc/makesbld/makesbld.conf
@@ -58,6 +62,7 @@ pkg_setup - create work directories (in /etc/makesbld/makesbld.conf)
 local_fetch
 local_unpack
 local_fix_source
+local_check_req_pkg
 patch
 compile
 install

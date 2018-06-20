@@ -26,7 +26,7 @@ from Gentoo is the ability to run one part of the SlackBuild at a
 time to save time or test functionality.
 
 makesbld is a build-only system. While it will create Slackware
-package tgz files, SlackBuild has no part in installing the
+package t?z files, SlackBuild has no part in installing the
 resulting package. This is left to pkgtool.
 
 The rationale of this package is to strike a balance between
@@ -43,7 +43,7 @@ README.SETUP - discusses initial configuration
 README.USAGE - discusses usage
 README.FUNCTIONS - details the reusable functions available
 README.makesbld - explains how to use the automatic script generation
-  programs makesbld.sh and makesbdld-d.sh
+  program makesbdld-d.sh
 README.QUICKSTART - walks the user through the creation of a SlackBuild
 README.SlackBuild.Anatomy - details the layout of the SlackBuild files
 

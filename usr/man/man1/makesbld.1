@@ -2,30 +2,22 @@
 .TH makesbld 1 4/2018 "Linux" "Make SlackBuild Scipt"
 
 .SH NAME
-makesbld.sh, makesbld-d.sh \- Interactive SlackBuild Script Generator
+makesbld-d.sh \- Interactive SlackBuild Script Generator
 
 .SH SYNOPSIS
-.B makesbld.sh 
-.RI [ cvs | svn | perl ]
-.br
 .B makesbld-d.sh
-.RI [ cvs | svn | perl ]
+.RI [ cvs | svn | perl |git ]
 
 .SH DESCRIPTION
 The 
-.B makesbld.sh
-and
-.B makesbld-dd.sh
-programs allow for the interactive creation
+.B makesbld-d.sh
+allows for the interactive creation
 of SlackBuild files. The
-.B makesbld.sh
-program prompts the user, in sequence, for PROGRAM NAME,
+.B makesbld-d.sh
+program prompts the user for PROGRAM NAME,
 VERSION, DESCRIPTION, Build REVISION, MIRROR location,
 TARNAME, Program REQUIREMENTS, NOTES, and
 Build CREATOR. The
-.B makesbld-d.sh
-program creates an ncurses data entry form which the user
-can edit in any sequence.
 .P
 If the
 .I cvs
@@ -50,7 +42,12 @@ insert the proper build instructions into the
 SlackBuild file for perl programs as well as
 include a section for the doinst.sh file that
 will insert the proper pod description.
-
+.P
+If the 
+.I git
+optional parameter is used, the program will
+prompt for GIT_SERVER location and GIT_NAME
+for the clone that will be downloaded.
 .SH RETURN VALUE
 The programs return no usable value, but can be
 aborted. If the programs are aborted no files or
@@ -92,7 +89,7 @@ be appended to all package tgz files.
 - contains download locations set to variables.
 .HP
 .I /usr/share/makesbld/*.skel
-- default .skel files (standard, cvs, svn, perl) for
+- default .skel files (standard, cvs, svn, perl, git) for
 creation of SlackBuilds.
 .HP
 .I /usr/lib/makesbld/makesbld.inc
@@ -138,8 +135,6 @@ permission to the location specified in the
 variable (see the RETURN VALUE section).
 
 .SH NOTES
-.B makesbld.sh
-and
 .B makesbld-d.sh
 will complete the most common settings for
 SlackBuilds. However, it is not recommended
@@ -177,4 +172,4 @@ show the default assignments.
 Let me know!
 
 .SH AUTHOR
-Peter Hyman <pete@peterhyman.com>
+%%date%% Peter Hyman <pete@peterhyman.com>

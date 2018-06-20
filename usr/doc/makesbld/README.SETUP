@@ -36,12 +36,13 @@ CFLAGS...CXXCPP are exported so configure will know how to
 
 The makesbld.skel files.
 
-There are three SlackBuild skeleton files.
+There are are five SlackBuild skeleton files.
 makesbld.skel - for downloading a tarball and compiling
 makesbld.cvs.skel - for fetching CVS and compiling
 makesbld.svn.skel - for fetching SVN and compiling
 makesbld.perl.skel - for fetching, compiling,  and installing 
   a perl program
+makesbld.git.skel - for fetching git projects and compiling
 
 The makesbld files are designed so that it can be run with
 only a specific function being called. makesbld accepts
@@ -98,6 +99,17 @@ CREATOR=
 SBDIR is the base SlackBuild repository directory where projects
 are stored. CREATOR is the name (most likely yours) of the person
 or organization that created the SlackBuild.
+
+Additional user.cfg options include:
+
+# suffix for builds
+MYIN=
+# directory completed packages will be placed
+PKG_DIR=
+# default build architecture, i.e. i486, i686
+ARCH=
+# make options
+MAKEOPTS=
 
 If user.cfg is not present, the user may interactively enter the
 data or modify the .skel files.

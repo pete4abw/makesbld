@@ -6,7 +6,8 @@
 [ ! -r VERSION ] && exit 1
 
 PKGNAME=makesbld
-VERSION=`cat VERSION`
+VERSION=`cat VERSION|grep VERSION|cut -d= -f2`
+COPYRIGHTDATE=`cat VERSION|grep COPYRIGHTDATE|cut -d= -f2`
 PKGDIR=/tmp
 BUILDDIR=${PKGDIR}/${PKGNAME}
 REV=1
@@ -17,12 +18,15 @@ REV=1
 mkdir -p $BUILDDIR
 cp -va install etc usr $BUILDDIR
 
-# use sed to install verion in needed files
+# use sed to install version in needed files
 
 cd $BUILDDIR
-for file in "install/slack-desc" "usr/bin/makesbld.sh" "usr/bin/makesbld-d.sh"
+for file in "install/slack-desc" "usr/bin/makesbld-d.sh" "usr/man/man1/makesbld.1" \
+	"usr/man/man5/makesbld.inc.5" "usr/man/man5/makesbld.conf.5" \
+	"usr/lib/makesbld/makesbld.inc" "etc/makesbld/makesbld.conf"
 do
-	sed -i -e "s^%%ver%%^$VERSION^" $file
+	sed -i -e "s^%%ver%%^$VERSION^" \
+	       -e "s^%%date%%^$COPYRIGHTDATE^"	$file
 done 
 
 for file in mirrors.conf makesbld.conf

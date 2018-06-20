@@ -50,6 +50,7 @@ pkg_setup         - clean out SRC and PKG directories
 local_fetch       - call routine to fetch source
 local_unpack      - unpack source
 local_fix_source  - change perms and ownership of SRC
+local_check_req_pkg - check that required packages exist
 patch             - if you have patch files add them in
                     the patch function
 compile           - run configure and make source according
@@ -65,16 +66,17 @@ If the SlackBuild file is called with a parameter, the get_args function
 will parse the command and execute the function desired. Arguments to
 the SlackBuild file can be one or none of:
 
-  setup         - execute pkg_setup function
-  fetch         - download source tarball, cvs or svn module
-  unpack        - unpack tarball
-  fix[_source]  - fix perms of Source directory
-  patch         - patch source files
-  compile       - compile source
-  install       - run make install and prepare sources for package build
-  desc[ription] - create slack-desc file and any others needed
-  doinst        - create doinst.sh file
-  build[_pkg]   - make package
+  setup           - execute pkg_setup function
+  fetch           - download source tarball, cvs or svn module
+  unpack          - unpack tarball
+  fix[_source]    - fix perms of Source directory
+  check[_req_pkg] - check required packaged and versions exist
+  patch           - patch source files
+  compile         - compile source
+  install         - run make install and prepare sources for package build
+  desc[ription]   - create slack-desc file and any others needed
+  doinst          - create doinst.sh file
+  build[_pkg]     - make package
 
 If an invalid option or -help, --help, -h is used, a status of all
 current variables and pathnames in use for the given application will

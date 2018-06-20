@@ -1,6 +1,7 @@
 # makesbld.inc
 # contains reusable code
-# 2006...2018
+# Version: %%ver%%
+# %%date%%
 # Peter Hyman <pete@peterhyman.com>
 
 # Call this to make sure bin and sbin are the correct groups
@@ -572,7 +573,8 @@ usage() {
 	echo      "-----------------------"
 	echo "CONFIGURE_DEFAULTS - $CONFIGURE_DEFAULTS"
 	echo "ARCH               - $ARCH"
-	echo "C[XX]FLAGS         - $CFLAGS | CXX - $CXX | CPP - $CPP"
+	echo "C[XX]FLAGS	 - $CFLAGS | CXX - $CXX | CPP - $CPP"
+	echo "LIBDIRSUFFIX	 - $LIBDIRSUFFIX"
 	echo "MAKEOPTS           - $MAKEOPTS"
 	echo "WGET               - $WGET | options $WGET_OPTIONS"
 }

@@ -4,6 +4,7 @@
 # Peter Hyman <pete@peterhyman.com>
 
 SBVERSION=%%ver%%
+COPYRIGHTDATE=%%date%%
 
 die() {
 	echo "$1"
@@ -23,10 +24,10 @@ if [ $# -eq 1 ] ; then
 		FTYPE=GIT
 		SKELNAME=makesbld.git.skel
 	else
-		die "Invalid Option: makesb.sh [cvs|svn|perl]"
+		die "Invalid Option: $1. Use $0 [cvs|svn|perl|git]"
 	fi
 elif [ $# -gt 1 ] ; then
-	die "Too many arguments: mahesb.sh [cvs|svn|perl]"
+	die "Too many arguments: $*. Use $0 [cvs|svn|perl|git]"
 else	# regular handling
 	SKELNAME=makesbld.skel
 fi	
@@ -50,7 +51,7 @@ fi
 
 if [ "$FTYPE" = "CVS" ] ; then
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006-2018 - Version: $SBVERSION\n\
+		--cr-wrap --form "Peter Hyman $COPYRIGHTDATE - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -65,7 +66,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	2> /tmp/makesbld.dialog
 elif [ "$FTYPE" = "SVN" ] ; then
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006-2018 - Version: $SBVERSION\n\
+		--cr-wrap --form "Peter Hyman $COPYRIGHTDATE - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -80,7 +81,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	2> /tmp/makesbld.dialog
 elif [ "$FTYPE" = "GIT" ] ; then
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006-2018 - Version: $SBVERSION\n\
+		--cr-wrap --form "Peter Hyman $COPYRIGHTDATE - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -95,7 +96,7 @@ Complete variables to create your SlackBuild file" 18 60 9 \
 	2> /tmp/makesbld.dialog
 else	
 	dialog --title "makesbld Creator" \
-		--cr-wrap --form "Peter Hyman 2006-2018 - Version: $SBVERSION\n\
+		--cr-wrap --form "Peter Hyman $COPYRIGHTDATE - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
 Complete variables to create your SlackBuild file" 18 60 9 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
@@ -179,6 +180,7 @@ sed -e 	"/^## Build/s%$%$PROGRAM%" \
 	-e "s%^MYIN=%MYIN=\"$MYIN\"%" \
 	-e "s%^PKG_DIR=%PKG_DIR=\"$PKG_DIR\"%" \
 	-e "s%^ARCH=%ARCH=\"$ARCH\"%" \
+	-e "s%^MAKEOPTS=%MAKEOPTS=\"$MAKEOPTS\"%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 if [ "$FTYPE" = "CVS" ] ; then
 	sed -e 	"s%^CVS_PSERVER=%CVS_PSERVER=$CVS_PSERVER%" \
