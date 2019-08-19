@@ -484,18 +484,26 @@ strip_static() {
 # unpack -- determine filetype and extract 
 # call with full path name of file to extract in $1
 unpack() {
-	if [ "${1: -3}" = "bz2" ] ; then
-		TAR_TYPE=j
-	elif [ "${1: -2}" = "gz" ] ; then
-		TAR_TYPE=z
-	elif [ "${1: -3}" = "tar" ] ; then
-		TAR_TYPE=
-	elif [ "${1: -7}" = "src.rpm" ] ; then
+	if [ "${1: -4}" = ".bz2" ] ; then
+		TAR_TYPE=bzip2
+	elif [ "${1: -3}" = ".gz" ] ; then
+		TAR_TYPE=gzip
+	elif [ "${1: -4}" = ".tar" ] ; then
+		TAR_TYPE=TAR
+	elif [ "${1: -8}" = ".src.rpm" ] ; then
 		TAR_TYPE=SRPM
-	elif [ "${1: -3}" = "rpm" ] ; then
+	elif [ "${1: -4}" = ".rpm" ] ; then
 		TAR_TYPE=RPM
-	elif [ "${1: -3}" = "zip" ] ; then
+	elif [ "${1: -4}" = ".zip" ] ; then
 		TAR_TYPE=ZIP
+	elif [ "${1: -2}" = ".z" ] ; then
+		TAR_TYPE=compress
+	elif [ "${1: -3}" = ".xz" -o "${1: -4}" = ".txz" ] ; then 
+		TAR_TYPE=xz
+	elif [ "${1: -3}" = ".lz" ] ; then
+		TAR_TYPE=lzip
+	elif [ "${1: -5}" = ".lzma" ] ; then
+		TAR_TYPE=lzma
 	fi
 	TEMPNAME=$1
 	# set up for RPM
@@ -507,13 +515,14 @@ unpack() {
 			[ -e "$TEMPNAME" ] && rm "$TEMPNAME"
 			rpm2targz "$1" || die "error: rpm2targz error"
 		)
-	fi
-	# Process ZIP or just keep tar -x
-	if [ "$TAR_TYPE" = "ZIP" ] ; then
+	elif [ "$TAR_TYPE" = "ZIP" ] ; then
 		unzip "${TEMPNAME}" || die "error: unzip extract"
+	elif [ "$TAR_TYPE" = "TAR" ] ; then
+		tar -xvf "${TEMPNAME}" || die "error: tar extract"
 	else
-		tar -${TAR_TYPE}xvf "${TEMPNAME}" || die "error: tar extract"
+		tar --"${TAR_TYPE}" -xvf "${TEMPNAME}" || die "error: tar --$TAR_TYPE extract"
 	fi
+
 }
 
 usage() {
