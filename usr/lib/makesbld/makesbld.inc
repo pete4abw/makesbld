@@ -509,13 +509,14 @@ unpack() {
 	# set up for RPM
 	if [ "$TAR_TYPE" = "RPM" -o "$TAR_TYPE" = "SRPM" ] ; then
 		TEMPNAME=$CWD/$(basename $TEMPNAME .rpm).tar.gz
-		TAR_TYPE=z
+		TAR_TYPE=gzip
 		# do in download dir
 		( cd $CWD
 			[ -e "$TEMPNAME" ] && rm "$TEMPNAME"
 			rpm2targz "$1" || die "error: rpm2targz error"
 		)
-	elif [ "$TAR_TYPE" = "ZIP" ] ; then
+	fi
+	if [ "$TAR_TYPE" = "ZIP" ] ; then
 		unzip "${TEMPNAME}" || die "error: unzip extract"
 	elif [ "$TAR_TYPE" = "TAR" ] ; then
 		tar -xvf "${TEMPNAME}" || die "error: tar extract"
