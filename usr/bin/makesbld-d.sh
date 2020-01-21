@@ -166,21 +166,21 @@ cp $SKELDIR/$SKELNAME $DESTDIR/$PROGRAM.SlackBuild
 
 # sed SlackBuild file
 DATE=`date +%D`
-sed -e 	"/^## Build/s%$%$PROGRAM%" \
-	-e "s%^## Creator:%## Creator: $CREATOR%" \
-	-e "s%^## Created by:%## Created by: makesbld Version: $SBVERSION%" \
-	-e "s%^## Date:%## Date: $DATE%" \
-	-e "s%^## Requirements:%## Requirements: $REQUIREMENTS%" \
-	-e "s%^## Notes:%## Notes: $NOTES%" \
-	-e "s%^NAME=%NAME=$PROGRAM%" \
-	-e "s%^VERSION=%VERSION=$VERSION%" \
-	-e "s%^REVISION=%REVISION=$REVISION%" \
-	-e "s%^DESCRIPTION=%DESCRIPTION=\"$DESCRIPTION\"%" \
-	-e "s%^REQ=%REQ=\'$REQUIREMENTS\'%" \
-	-e "s%^MYIN=%MYIN=\"$MYIN\"%" \
-	-e "s%^PKG_DIR=%PKG_DIR=\"$PKG_DIR\"%" \
-	-e "s%^ARCH=%ARCH=\"$ARCH\"%" \
-	-e "s%^MAKEOPTS=%MAKEOPTS=\"$MAKEOPTS\"%" \
+sed 	-e "/^## Build/s%$%$PROGRAM%" \
+	-e "/^## Creator:/s%$%$CREATOR%" \
+	-e "/^## Created by:/s%$%makesbld Version: $SBVERSION%" \
+	-e "/^## Date:/s%$%/$DATE%" \
+	-e "/^## Requirements:/s%$%$REQUIREMENTS%" \
+	-e "/^## Notes:/s%$%$NOTES%" \
+	-e "/^NAME=/s%$%$PROGRAM%" \
+	-e "/^VERSION=/s%$%\$\{VERSION:-$VERSION\}%" \
+	-e "/^REVISION=/s%$%\$\{REVISION:-$REVISION\}%" \
+	-e "/^DESCRIPTION=/s%$%\"$DESCRIPTION\"%" \
+	-e "/^REQ=/s%$%\'$REQUIREMENTS\'%" \
+	-e "/^MYIN=/s%$%\"$MYIN\"%" \
+	-e "/^PKG_DIR=/s%$%\"$PKG_DIR\"%" \
+	-e "/^ARCH=/s%$%\"$ARCH\"%" \
+	-e "/^MAKEOPTS=/s%$%\"$MAKEOPTS\"%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 if [ "$FTYPE" = "CVS" ] ; then
 	sed -e 	"s%^CVS_PSERVER=%CVS_PSERVER=$CVS_PSERVER%" \
