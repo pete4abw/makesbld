@@ -274,13 +274,14 @@ fetch_svn() {
 }
 
 #   GIT = git program
-#   GIT_OPTIONS = clone and clone options
+#   GIT_COMMAND = clone by default
+#   GIT_OPTIONS = options, e.g. -b branch
 #   GIT_SERVER = git server location
 #   GIT_NAME = git filename
 fetch_git() {
 	# clone git from TMP directory
 	cd $TMP
-	$GIT $GIT_OPTIONS $GIT_SERVER/$GIT_NAME
+	$GIT $GIT_COMMAND $GIT_OPTIONS $GIT_SERVER/$GIT_NAME
 }
 
 fix_source() {

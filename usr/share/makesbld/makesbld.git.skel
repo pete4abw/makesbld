@@ -31,25 +31,19 @@ DESCRIPTION=
 REQ=
 PKG_NAME=$NAME-$VERSION-$ARCH-$BUILD.$PKG_EXT
 
-# add mirror location to GIT_SERVER
-# add extension to TAR_NAME and change
-SRC_NAME=$NAME
+# GIT_COMMAND=clone
+# GIT_OPTIONS=  use for branch, ref, tags, etc
 GIT_NAME=
-
-MIRRORS="/etc/makesbld/mirrors.conf"
-[ -r $MIRRORS ] && source $MIRRORS
-
+GIT_OPTIONS=
 GIT_SERVER=
-SRC_EXTRACT_DIR=$SRC_NAME
-SRC=$TMP/$SRC_EXTRACT_DIR
+SRC=$TMP/$GIT_NAME
 PKG=$TMP/package-$NAME
 
 # default document directory
-DOCDIR=$PKG/usr/doc/$SRC_NAME
+DOCDIR=$PKG/usr/doc/$NAME-$VERSION
 SHAREDIR=$PKG/usr/share/$NAME
 
 [ ! -n "$NAME" ] && die "error: nothing to do. nothing defined"
-
 
 # retrieve source to $CWD
 local_fetch() {

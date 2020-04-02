@@ -225,11 +225,10 @@ The
 function requires the following variables to be set on entry.
 From
 .IR makesbld.conf ,
-.BR GIT\ and\ GIT_OPTIONS
-must contain the location for the git program and
-GIT_OPTIONS must contain any options that are fixed
-for git.
-.BR GIT\ and\ GIT_OPTIONS
+.BR GIT,\ GIT_COMMAND
+must contain the location for the git program, the command to execute
+(clone by default).
+.BR GIT_OPTIONS,\ GIT_SERVER,\ and\ GIT_NAME
 must be defined in the
 .I program.SlackBuild
 file and directory of the module to fetch. When git is used, the unpack

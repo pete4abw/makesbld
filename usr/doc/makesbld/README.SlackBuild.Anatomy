@@ -25,6 +25,8 @@ CVS_MODULE - project directory for cvs
 SVN_SERVER - svn server
 SVN_MODULE - project directory for svn
 [ the git skel file has the following ]
+GIT_COMMAND - default is clone
+GIT_OPTIONS - can be used to fetch a branch, etc.
 GIT_SERVER - git server
 GIT_NAME - name of project to fetch
 

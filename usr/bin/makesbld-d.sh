@@ -83,16 +83,17 @@ elif [ "$FTYPE" = "GIT" ] ; then
 	dialog --title "makesbld Creator" \
 		--cr-wrap --form "Peter Hyman $COPYRIGHTDATE - Version: $SBVERSION\n\
 Build Directory: $SBDIR\n\
-Complete variables to create your SlackBuild file" 18 60 9 \
+Complete variables to create your SlackBuild file" 18 60 10 \
 	"Program Name:" 1 1 " " 1 15 30 30 \
 	"Version:" 2 1 " " 2 15 20 20 \
 	"Description:" 3 1 " " 3 15 40 40 \
 	"Revision:" 4 1 " " 4 15 6 6 \
 	"GIT Server:" 5 1 " " 5 15 40 80 \
 	"GIT Name:" 6 1 " " 6 15 40 60 \
-	"Requirements:" 7 1 " " 7 15 40 40 \
-	"Notes:" 8 1 " " 8 15 40 40 \
-	"Creator:" 9 1 "$CREATOR " 9 15 30 20 \
+	"GIT Options:" 7 1 " " 7 15 40 40 \
+	"Requirements:" 8 1 " " 8 15 40 40 \
+	"Notes:" 9 1 " " 9 15 40 40 \
+	"Creator:" 10 1 "$CREATOR " 10 15 30 20 \
 	2> /tmp/makesbld.dialog
 else	
 	dialog --title "makesbld Creator" \
@@ -150,9 +151,28 @@ do
 				TAR_NAME=$TMPVAR
 			fi
 			;;
-		7) REQUIREMENTS=$TMPVAR;;
-		8) NOTES=$TMPVAR;;
-		9) CREATOR=$TMPVAR;;
+		7) 	if [ "$FTYPE" = "GIT" ] ; then
+				GIT_OPTIONS=$TMPVAR
+			else
+				REQUIREMENTS=$TMPVAR
+			fi
+			;;
+		8)	if [ "$FTYPE" = "GIT" ] ; then
+				REQUIREMENTS=$TMPVAR
+			else
+				NOTES=$TMPVAR
+			fi
+			;;
+		9)	if [ "$FTYPE" = "GIT" ] ; then
+				NOTES=$TMPVAR
+			else
+				CREATOR=$TMPVAR
+			fi
+			;;
+		10)	if [ "$FTYPE" = "GIT" ] ; then
+				CREATOR=$TMPVAR
+			fi
+			;;
 	esac
 done
 IFS=$SAVEIFS
@@ -169,7 +189,7 @@ DATE=`date +%D`
 sed 	-e "/^## Build/s%$%$PROGRAM%" \
 	-e "/^## Creator:/s%$%$CREATOR%" \
 	-e "/^## Created by:/s%$%makesbld Version: $SBVERSION%" \
-	-e "/^## Date:/s%$%/$DATE%" \
+	-e "/^## Date:/s%$%$DATE%" \
 	-e "/^## Requirements:/s%$%$REQUIREMENTS%" \
 	-e "/^## Notes:/s%$%$NOTES%" \
 	-e "/^NAME=/s%$%$PROGRAM%" \
@@ -183,20 +203,21 @@ sed 	-e "/^## Build/s%$%$PROGRAM%" \
 	-e "/^MAKEOPTS=/s%$%\"$MAKEOPTS\"%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 if [ "$FTYPE" = "CVS" ] ; then
-	sed -e 	"s%^CVS_PSERVER=%CVS_PSERVER=$CVS_PSERVER%" \
-	-e "s%^CVS_MODULE=%CVS_MODULE=$CVS_MODULE%" \
+	sed -e 	"/^CVS_PSERVER=/s%$%$CVS_PSERVER%" \
+	-e "/^CVS_MODULE=/s%$%$CVS_MODULE%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 elif [ "$FTYPE" = "SVN" ] ; then
-	sed -e 	"s%^SVN_SERVER=%SVN_SERVER=$SVN_SERVER%" \
-	-e "s%^SVN_MODULE=%SVN_MODULE=$SVN_MODULE%" \
+	sed -e 	"/^SVN_SERVER=/s%$%$SVN_SERVER%" \
+	-e "/^SVN_MODULE=/s%$%$SVN_MODULE%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 elif [ "$FTYPE" = "GIT" ] ; then
-	sed -e 	"s%^GIT_SERVER=%GIT_SERVER=$GIT_SERVER%" \
-	-e "s%^GIT_NAME=%GIT_NAME=$GIT_NAME%" \
+	sed -e 	"/^GIT_SERVER=/s%$%$GIT_SERVER%" \
+	-e "/^GIT_NAME=/s%$%$GIT_NAME%" \
+	-e "/^GIT_OPTIONS=/s%$%\"$GIT_OPTIONS\"%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 else
-	sed -e 	"s|^SRC_LOC=|SRC_LOC=\"$MIRROR\"|" \
-	-e "s%^TAR_NAME=.*$%TAR_NAME=$TAR_NAME%" \
+	sed -e 	"/^SRC_LOC=/s%$%\"$MIRROR\"%" \
+	-e "/^TAR_NAME=/s%$%$TAR_NAME%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 fi
 

@@ -104,8 +104,12 @@ CC
 .B GIT
 ="$(which git)"
 .P
+.B GIT_COMMAND
+="clone"
+.P
 .B GIT_OPTIONS
-="clone".P
+= (used for branch, fetch, tags, etc.)
+.P
 .B PC
 ="$(which pkg-config)"
 .P
@@ -113,12 +117,7 @@ CC
 ="--exists --print-errors"
 .HP
 .B DOCFILES
-="ABOUT ABOUT-NLS ANNOUNCE AUTHORS CONFIGURATION CHANGES \
-COPYING COPYRIGHT CREDITS ChangeLog Changelog CHANGELOG CONTRIBUTORS \
-*FAQ* FEATURES FILES HACKING History HISTORY INSTALL* LICENSE LSM \
-MANIFEST NEWS *README* *Readme* SITES *RELEASE* RELNOTES THANKS TIPS \
-TODO VERSION CONFIGURATION* GPL License Doc doc Docs* docs* Roadmap \
-ROADMAP *BUGS* index.ht* *INDEX* Changes"
+= (list in makesbld.conf used by create_docs function)
 .PD 1
 .SH SEE ALSO
 .BR makesbld (1), makesbld.inc (5)
