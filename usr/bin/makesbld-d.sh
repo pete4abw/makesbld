@@ -198,7 +198,7 @@ sed 	-e "/^## Build/s%$%$PROGRAM%" \
 	-e "/^DESCRIPTION=/s%$%\"$DESCRIPTION\"%" \
 	-e "/^REQ=/s%$%\'$REQUIREMENTS\'%" \
 	-e "/^MYIN=/s%$%\"$MYIN\"%" \
-	-e "/^PKG_DIR=/s%$%\"$PKG_DIR\"%" \
+	-e "/^PKG_DIR=/s%$%\$\{PKG_DIR:-\"$PKG_DIR\"\}%" \
 	-e "/^ARCH=/s%$%\"$ARCH\"%" \
 	-e "/^MAKEOPTS=/s%$%\"$MAKEOPTS\"%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
@@ -217,7 +217,7 @@ elif [ "$FTYPE" = "GIT" ] ; then
 	-i $DESTDIR/$PROGRAM.SlackBuild
 else
 	sed -e 	"/^SRC_LOC=/s%$%\"$MIRROR\"%" \
-	-e "/^TAR_NAME=/s%$%$TAR_NAME%" \
+	-e "/^TAR_NAME=/s%=.*$%=$TAR_NAME%" \
 	-i $DESTDIR/$PROGRAM.SlackBuild
 fi
 
